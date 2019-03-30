@@ -2,7 +2,7 @@
 ################################library##############################################
 library(tidyverse)
 library(readr)
-lib
+
 
 ################################Read File############################################
 dat <- read_csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
