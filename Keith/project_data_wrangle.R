@@ -22,6 +22,20 @@ dat_n <- dat %>%
          is_recid, 
          two_year_recid)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 c_cu <- dat_n$c_charge_desc %>% 
   unique()
 
@@ -31,6 +45,8 @@ c_charge <- tibble(c_charge_desc = c_cu) %>%
 dat_n %>% 
   left_join(c_charge) %>% 
   mutate(c_charge_desc = )
+
+
 
 
 
