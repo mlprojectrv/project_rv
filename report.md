@@ -27,6 +27,7 @@ library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('dt_dat.csv')
+dat_nnn <- read_csv('race2.csv')
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -176,6 +177,25 @@ dat %>% head(5) %>% print.data.frame()
 ## 5              0
 ```
 #### Data after wrangleing(Neutral Network and Naïve Baynes)
+
+```r
+dat_nnn %>% head(5) %>% print.data.frame()
+```
+
+```
+##   sex age race juv_fel_count juv_misd_count juv_other_count priors_count
+## 1   1  69    1             0              0               0            0
+## 2   1  34    0             0              0               0            0
+## 3   1  24    0             0              0               1            4
+## 4   1  23    0             0              1               0            1
+## 5   1  43    1             0              0               0            2
+##   c_charge_degree c_charge_desc two_year_recid
+## 1               0             1              0
+## 2               0             2              1
+## 3               0             3              1
+## 4               0             4              0
+## 5               0             5              0
+```
 
 ###    Decisions made{.tabset}  
 #### Charges
@@ -663,7 +683,7 @@ dat_o %>%
         legend.position = c(0.9,0.9))
 ```
 
-![](report_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 #### 2  
 
@@ -683,7 +703,7 @@ dat_o %>%
         legend.position = c(0.9,0.9)) 
 ```
 
-![](report_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 #### 3
 
@@ -697,7 +717,7 @@ dat_o %>%
   labs(y = 'probability', x = 'mpg')
 ```
 
-![](report_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ```r
 dat_o %>% 
@@ -710,7 +730,7 @@ dat_o %>%
   labs(y = 'probability', x = 'mpg')
 ```
 
-![](report_files/figure-html/unnamed-chunk-7-2.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
 
 ###    The planning  
 We mainly used three algorithms for this project, decision tree, neural network, and naïve Baynes. Since we are trying to compare the given predicted score to ours, we were convinced that a regression is best for the task at hand, since the predicted scores are in a scale of 1 to 10. 1 being the inmates will not likely to commit crime in the future and 10 being very likely, our algorithms would suggest a number between 1 and 10 for the predicted, then we would find out how close/far the score is to the target (1 = 10, 0 = 0) compared with the given scores. We also wanted to see if the algorithm is discriminating against each group of people by their colour of skin. A way to find that out is to see the ratio of (false positive) type I error in the non-African-American cases and  African-American cases.  
@@ -726,7 +746,7 @@ Algorithm|With race | Without race
 ---------|----------|-------------
 Decision tree|45.6%|44.0%
 Neutral network|66%|65%  
-Naïve Baynes|61.8%|55.7%  
+Naïve Baynes|63.22%|62.77%  
 Ensemble|?|?    
 ## Confusion Matrix  
 

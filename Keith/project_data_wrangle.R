@@ -39,9 +39,7 @@ dat_out <- dat_n %>%
                                      priors_count  < 5    ~ '1 to 5',
                                      priors_count  < 15   ~ '5+ to 15',
                                      priors_count  < 25   ~ '15+ to 25',
-                                     T                    ~ '25+'),
-         race            = case_when(race == "African-American" ~ T,
-                                     T                          ~ F)) 
+                                     T                    ~ '25+')) 
 
 write_csv(dat_out,'dt_dat.csv')
 
@@ -133,4 +131,9 @@ class_levels <- factor(y$two_year_recid)
 confusionMatrix(p_class, class_levels)
 
 
+no_cores <- detectCores() - 1
+c1 <- parallel::makeCluster(no_cores)
+library(tidyverse)
+
+clusterEvalQ(c1, library(tidyverse))
 
