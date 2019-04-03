@@ -24,13 +24,6 @@ library(ggplot2)
 library(ggridges)
 library(pander)
 library(caret)
-```
-
-```
-## Warning: package 'caret' was built under R version 3.5.3
-```
-
-```r
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('dt_dat.csv')
@@ -692,7 +685,9 @@ dat_o %>%
 
 ![](report_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
-#### 2  
+#### 2
+
+The histograms show the predicted scores from the algorithm. Each bar’s color presents if they are recidivist or not. The recidivist bar should distribute to score of 10, and not recidivist bar should place to score of 0 based on the algorithm. In the other races’ plot, we can see that most of the not recidivist criminals of other races are distributed between 0 to 2, and it gets decreased as the predicted scores go higher. However, the recidivist bars go low like not recidivist bars. This states that the algorithm tends to distribute criminals of the other races who are not recidivists. The African American histogram shows that there are more African American recidivists than in the plot of the other races. It is interesting to see how much of the differences there is between African American than all the other races combined.
 
 ```r
 dat_o %>% 
