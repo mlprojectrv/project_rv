@@ -27,7 +27,7 @@ library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('dt_dat.csv')
-dat_nnn <- read_csv('race.csv')
+dat_nnn <- read_csv('race2.csv')
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -746,7 +746,7 @@ Algorithm|With race | Without race
 ---------|----------|-------------
 Decision tree|45.6%|44.0%
 Neutral network|66%|65%  
-Naïve Baynes|61.8%|55.7%  
+Naïve Baynes|63.22%|62.77%  
 Ensemble|?|?    
 ## Confusion Matrix  
 
