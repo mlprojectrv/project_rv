@@ -696,16 +696,20 @@ dat_o %>%
 
 ```r
 dat_o %>% 
+  mutate(sep = case_when(
+    race == 'African-American' ~ 'Black',
+    race != 'African-American' ~ 'Non-Black'
+  )) %>% 
   ggplot() +
-  aes(x = dat_o$decile_score.1, fill = dat_o$two_year_recid== 1) +
+  aes(x = dat_o$decile_score.1, fill = dat_o$two_year_recid == 1) +
   geom_histogram(position = 'dodge_2') +
-  facet_grid(race == 'African-American'~.) +
+  facet_grid(sep~.) +
   ggthemes::theme_pander() +
-  theme(strip.text.y = element_text(size = 8, angle = 0),
+  theme(strip.text.y = element_text(size = 12, angle = 0),
         strip.background = element_blank()) +
   scale_fill_brewer(palette = 'Dark2') +
   guides(fill = guide_legend(title = 'recidivist', label.position = 'right')) +
-  labs(x = 'predicted score', y = '') +
+  labs(title = 'The Actual Recidivism Compared to the Predicted Score', x = 'predicted score', y = '') +
   theme(axis.line.x = element_line(linetype = 'dashed', colour = 'Gray'),
         legend.position = c(0.9,0.9)) 
 ```
@@ -721,7 +725,7 @@ dat_o %>%
   geom_smooth(method = 'glm', method.args = list(family = 'binomial'), se = F, linetype = 'dashed') +
   geom_point() +
   ggthemes::theme_pander() +
-  labs(title='The Probability of a Criminal Recidivating', y = 'probability', x = 'Predicted Score')
+  labs(title='The Probability of a Criminal Recidivating', subtitle = 'According to their algorithm\'s ', y = 'probability', x = 'Predicted Score')
 ```
 
 ![](report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
