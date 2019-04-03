@@ -721,7 +721,7 @@ dat_o %>%
   geom_smooth(method = 'glm', method.args = list(family = 'binomial'), se = F, linetype = 'dashed') +
   geom_point() +
   ggthemes::theme_pander() +
-  labs(y = 'probability', x = 'mpg')
+  labs(title='The Probability of a Criminal Recidivating', y = 'probability', x = 'Predicted Score')
 ```
 
 ![](report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
@@ -734,7 +734,7 @@ dat_o %>%
   geom_smooth(method = 'glm', method.args = list(family = 'binomial'), se = F, linetype = 'dashed') +
   geom_point() +
   ggthemes::theme_pander() +
-  labs(y = 'probability', x = 'mpg')
+  labs(title='The Probability of an African American Recidivating', y = 'Probability', x = 'Predicted Score')
 ```
 
 ![](report_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
@@ -752,7 +752,7 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
 Algorithm|With race | Without race
 ---------|----------|-------------
 Decision tree|45.6%|44.0%
-Neutral network|66%|65%  
+Neutral network|66.6%|67.92%  
 Naïve Baynes|63.22%|62.77%  
 Ensemble|?|?    
 ## Confusion Matrix  
