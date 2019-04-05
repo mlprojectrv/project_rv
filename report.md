@@ -685,20 +685,26 @@ dat_o %>%
 
 ![](report_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
-#### 2  
+#### 2
+
+The histograms show the predicted scores from the algorithm. Each bar’s color presents if they are recidivist or not. The recidivist bar should distribute to score of 10, and not recidivist bar should place to score of 0 based on the algorithm. In the other races’ plot, we can see that most of the not recidivist criminals of other races are distributed between 0 to 2, and it gets decreased as the predicted scores go higher. However, the recidivist bars go low like not recidivist bars. This states that the algorithm tends to distribute criminals of the other races who are not recidivists. The African American histogram shows that there are more African American recidivists than in the plot of the other races. It is interesting to see how much of the differences there is between African American than all the other races combined.
 
 ```r
 dat_o %>% 
+  mutate(sep = case_when(
+    race == 'African-American' ~ 'Black',
+    race != 'African-American' ~ 'Non-Black'
+  )) %>% 
   ggplot() +
-  aes(x = dat_o$decile_score.1, fill = dat_o$two_year_recid== 1) +
+  aes(x = dat_o$decile_score.1, fill = dat_o$two_year_recid == 1) +
   geom_histogram(position = 'dodge_2') +
-  facet_grid(race == 'African-American'~.) +
+  facet_grid(sep~.) +
   ggthemes::theme_pander() +
-  theme(strip.text.y = element_text(size = 8, angle = 0),
+  theme(strip.text.y = element_text(size = 12, angle = 0),
         strip.background = element_blank()) +
   scale_fill_brewer(palette = 'Dark2') +
   guides(fill = guide_legend(title = 'recidivist', label.position = 'right')) +
-  labs(x = 'predicted score', y = '') +
+  labs(title = 'The Actual Recidivism Compared to the Predicted Score', x = 'predicted score', y = '') +
   theme(axis.line.x = element_line(linetype = 'dashed', colour = 'Gray'),
         legend.position = c(0.9,0.9)) 
 ```
@@ -714,7 +720,7 @@ dat_o %>%
   geom_smooth(method = 'glm', method.args = list(family = 'binomial'), se = F, linetype = 'dashed') +
   geom_point() +
   ggthemes::theme_pander() +
-  labs(y = 'probability', x = 'mpg')
+  labs(title='The Probability of a Criminal Recidivating', subtitle = 'According to their algorithm\'s ', y = 'probability', x = 'Predicted Score')
 ```
 
 ![](report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
@@ -727,7 +733,7 @@ dat_o %>%
   geom_smooth(method = 'glm', method.args = list(family = 'binomial'), se = F, linetype = 'dashed') +
   geom_point() +
   ggthemes::theme_pander() +
-  labs(y = 'probability', x = 'mpg')
+  labs(title='The Probability of an African American Recidivating', y = 'Probability', x = 'Predicted Score')
 ```
 
 ![](report_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
@@ -745,7 +751,7 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
 Algorithm|With race | Without race
 ---------|----------|-------------
 Decision tree|45.6%|44.0%
-Neutral network|66%|65%  
+Neutral network|66.6%|67.92%  
 Naïve Baynes|63.22%|62.77%  
 Ensemble|?|?    
 ## Confusion Matrix  
