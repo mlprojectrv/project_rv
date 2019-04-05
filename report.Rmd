@@ -31,6 +31,8 @@ dat_nnn <- read_csv('race2.csv')
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
 
+
+
 ### Team Info
 1. Team members: 
   Keaton Sant, Keith Tung, Juheon Song
