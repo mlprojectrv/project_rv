@@ -25,7 +25,7 @@ library(pander)
 library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
-dat <- read_csv('dt_dat.csv')
+dat <- read_csv('../dt_dat.csv')
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -173,12 +173,15 @@ Ensemble|?|?
 x <- dat_o %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
+
 p_class <- factor(x$highlow)
 class_levels <- factor(x$two_year_recid)
 
-confusionMatrix(p_class, class_levels)
-
+re <- confusionMatrix(p_class, class_levels)
+re$table
+re$byClass[1]
+re$byClass[2]
 
 y <- dat_o %>% 
   filter(race == 'African-American') %>% 
@@ -188,7 +191,11 @@ y <- dat_o %>%
 
 p_class <- factor(y$highlow)
 class_levels <- factor(y$two_year_recid)
-confusionMatrix(p_class, class_levels)
+re <- confusionMatrix(p_class, class_levels)
+re$table
+re$byClass[1]
+re$byClass[2]
+
 
 ```
 

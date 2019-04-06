@@ -26,7 +26,7 @@ library(pander)
 library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
-dat <- read_csv('dt_dat.csv')
+dat <- read_csv('../dt_dat.csv')
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -734,41 +734,38 @@ Ensemble|?|?
 x <- dat_o %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
+
 p_class <- factor(x$highlow)
 class_levels <- factor(x$two_year_recid)
 
-confusionMatrix(p_class, class_levels)
+re <- confusionMatrix(p_class, class_levels)
+re$table
 ```
 
 ```
-## Confusion Matrix and Statistics
-## 
 ##           Reference
 ## Prediction    0    1
 ##          0 3036 1542
 ##          1  927 1709
-##                                           
-##                Accuracy : 0.6577          
-##                  95% CI : (0.6467, 0.6687)
-##     No Information Rate : 0.5493          
-##     P-Value [Acc > NIR] : < 2.2e-16       
-##                                           
-##                   Kappa : 0.2968          
-##                                           
-##  Mcnemar's Test P-Value : < 2.2e-16       
-##                                           
-##             Sensitivity : 0.7661          
-##             Specificity : 0.5257          
-##          Pos Pred Value : 0.6632          
-##          Neg Pred Value : 0.6483          
-##              Prevalence : 0.5493          
-##          Detection Rate : 0.4208          
-##    Detection Prevalence : 0.6346          
-##       Balanced Accuracy : 0.6459          
-##                                           
-##        'Positive' Class : 0               
-## 
+```
+
+```r
+re$byClass[1]
+```
+
+```
+## Sensitivity 
+##   0.7660863
+```
+
+```r
+re$byClass[2]
+```
+
+```
+## Specificity 
+##   0.5256844
 ```
 
 ```r
@@ -780,37 +777,33 @@ y <- dat_o %>%
 
 p_class <- factor(y$highlow)
 class_levels <- factor(y$two_year_recid)
-confusionMatrix(p_class, class_levels)
+re <- confusionMatrix(p_class, class_levels)
+re$table
 ```
 
 ```
-## Confusion Matrix and Statistics
-## 
 ##           Reference
 ## Prediction    0    1
 ##          0 1179  708
 ##          1  616 1193
-##                                           
-##                Accuracy : 0.6418          
-##                  95% CI : (0.6261, 0.6573)
-##     No Information Rate : 0.5143          
-##     P-Value [Acc > NIR] : < 2e-16         
-##                                           
-##                   Kappa : 0.284           
-##                                           
-##  Mcnemar's Test P-Value : 0.01239         
-##                                           
-##             Sensitivity : 0.6568          
-##             Specificity : 0.6276          
-##          Pos Pred Value : 0.6248          
-##          Neg Pred Value : 0.6595          
-##              Prevalence : 0.4857          
-##          Detection Rate : 0.3190          
-##    Detection Prevalence : 0.5106          
-##       Balanced Accuracy : 0.6422          
-##                                           
-##        'Positive' Class : 0               
-## 
+```
+
+```r
+re$byClass[1]
+```
+
+```
+## Sensitivity 
+##   0.6568245
+```
+
+```r
+re$byClass[2]
+```
+
+```
+## Specificity 
+##   0.6275644
 ```
 
     
