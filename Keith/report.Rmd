@@ -210,17 +210,18 @@ re$byClass[1]
 re$byClass[2]
 
 ```
+Filtered|F1 meansure|Seneitivity|Specificity
+---------|----------|-------------
 ## Other Confusion Matrix
 ### decision tree  
 ```{r}
 p_class <- factor(rdat$prediction, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
-fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
+i <- fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
 p_class <- factor(rdat$drpre, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
-fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
-grid.arrange(p1, p2, ncol = 2)
+j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 ```
 
 ### NN  

@@ -836,6 +836,8 @@ re$byClass[2]
 ## Specificity 
 ##   0.6568245
 ```
+Filtered|F1 meansure|Seneitivity|Specificity
+---------|----------|-------------
 ## Other Confusion Matrix
 ### decision tree  
 
@@ -843,7 +845,7 @@ re$byClass[2]
 p_class <- factor(rdat$prediction, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
-fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
+i <- fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
 ```
 
 ![](report_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
@@ -851,7 +853,7 @@ fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
 ```r
 p_class <- factor(rdat$drpre, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
-fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
+j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 ```
 
 ![](report_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
