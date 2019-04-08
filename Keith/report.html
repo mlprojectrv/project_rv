@@ -425,18 +425,18 @@ rdat &lt;- read_csv(&#39;../dt.csv&#39;) %&gt;% select(-1)</code></pre>
 <h1>Introduction</h1>
 <div id="the-source" class="section level3">
 <h3>The source</h3>
-<p>This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in information of a criminal, for instance, age, gender, race, and criminal records, then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains paragraphs of argument, various plots and charts that surround the same claim : the algorithm is biased against black criminal.</p>
+<p>This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in criminal information such as age, gender, race, and criminal records then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains arguments with various plots and charts that surround the same claim : the algorithm is biased against black criminal.</p>
 </div>
 <div id="our-take" class="section level3">
 <h3>Our take</h3>
-<p>We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 years period after they were released from jail.</p>
+<p>We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict the criminals’ recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 year period after they were released from jail.</p>
 </div>
 <div id="our-goals" class="section level3">
 <h3>Our Goals</h3>
 <p>There are two main goals for our project:</p>
 <ul>
 <li>Examine the claim made by the study, see that the current algorithm is biased</li>
-<li>Try to create an algorithm hoping to see if race is indeed a helpful variable in predicting recidivism rate.</li>
+<li>Try to create an algorithm hoping to see if race is indeed a helpful variable in predicting the recidivism rate.</li>
 </ul>
 </div>
 </div>
@@ -444,7 +444,7 @@ rdat &lt;- read_csv(&#39;../dt.csv&#39;) %&gt;% select(-1)</code></pre>
 <h1>Data Preparation</h1>
 <div id="understanding-the-data" class="section level3">
 <h3>Understanding the data</h3>
-<p>Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consist of 53 columns and 10 observation.</p>
+<p>Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consists of 53 columns and 10 observations.</p>
 <p>There are a few observations from the data.</p>
 </div>
 <div id="observation" class="section level3 tabset">
