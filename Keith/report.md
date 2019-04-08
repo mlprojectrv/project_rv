@@ -24,12 +24,37 @@ library(ggplot2)
 library(ggridges)
 library(pander)
 library(caret)
+```
+
+```
+## Warning: package 'caret' was built under R version 3.5.3
+```
+
+```r
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('../dt_dat.csv')
 rdat <- read_csv('../dt.csv') %>% select(-1)
+```
+
+```
+## Warning: Missing column names filled in: 'X1' [1]
+```
+
+```r
 frdat <- read_csv('../fr_race.csv') %>% select(-1)
+```
+
+```
+## Warning: Missing column names filled in: 'X1' [1]
+```
+
+```r
 fdat <- read_csv('../frw_race.csv') %>% select(-1)
+```
+
+```
+## Warning: Missing column names filled in: 'X1' [1]
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -42,21 +67,21 @@ fdat <- read_csv('../frw_race.csv') %>% select(-1)
     
 # Introduction  
 ###    The source  
-This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in information of a criminal, for instance, age, gender, race, and criminal records, then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains paragraphs of argument, various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
+This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in criminal information such as age, gender, race, and criminal records then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains arguments with various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
 
 ###     Our take  
 
-We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 years period after they were released from jail.   
+We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict the criminals' recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 year period after they were released from jail.   
 
 ###    Our Goals  
 There are two main goals for our project:  
 
 *	Examine the claim made by the study, see that the current algorithm is biased
-*	Try to create an algorithm hoping to see if race is indeed a helpful variable in predicting recidivism rate.
+*	Try to create an algorithm hoping to see if race is indeed a helpful variable in predicting the recidivism rate.
   
 #  Data Preparation  
 ###    Understanding the data  
-Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consist of 53 columns and 10 observation.  
+Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consists of 53 columns and 10 observations.  
   
   
 There are a few observations from the data.   
@@ -727,15 +752,13 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
   
 Algorithm|With race | Without race
 ---------|----------|-------------
-Algorithm given|65.7%|None
-Decision tree|50.0%|48.9%
+Decision tree|45.6%|44.0%
 Neutral network|66%|65%  
 Naïve Baynes|61.8%|55.7% 
 KNN|62.4%|62.9%
 Stacking|63%|62%
 Ensemble|67%|63%    
-## Original Algorithm Confusion Matrix  
-One of the ways we decided to use to assess how the algorithm is to look at how the false positive rate of the algorithms change as we filtered the data at race. If the algorithm doesn’t not discriminate* against race, we could expect an unchanged false positive rate. 
+## Confusion Matrix  
 
 ```r
 x <- dat_o %>% 
@@ -743,30 +766,18 @@ x <- dat_o %>%
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
                              T                  ~ 0))
 
-p_class <- factor(x$highlow, levels = c(1,0))
-class_levels <- factor(x$two_year_recid, levels = c(1,0))
+p_class <- factor(x$highlow)
+class_levels <- factor(x$two_year_recid)
 
 re <- confusionMatrix(p_class, class_levels)
-fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
-```
-
-![](report_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
-
-```r
-F_meas(re$table)
+re$table
 ```
 
 ```
-## [1] 0.5806013
-```
-
-```r
-re$overall[1]
-```
-
-```
-##  Accuracy 
-## 0.6577488
+##           Reference
+## Prediction    0    1
+##          0 3036 1542
+##          1  927 1709
 ```
 
 ```r
@@ -775,7 +786,7 @@ re$byClass[1]
 
 ```
 ## Sensitivity 
-##   0.5256844
+##   0.7660863
 ```
 
 ```r
@@ -784,7 +795,7 @@ re$byClass[2]
 
 ```
 ## Specificity 
-##   0.7660863
+##   0.5256844
 ```
 
 ```r
@@ -794,29 +805,17 @@ y <- dat_o %>%
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
                              T                  ~ 0))
 
-p_class <- factor(y$highlow, levels = c(1,0))
-class_levels <- factor(y$two_year_recid, levels = c(1,0))
+p_class <- factor(y$highlow)
+class_levels <- factor(y$two_year_recid)
 re <- confusionMatrix(p_class, class_levels)
-fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
-```
-
-![](report_files/figure-html/unnamed-chunk-9-2.png)<!-- -->
-
-```r
-F_meas(re$table)
+re$table
 ```
 
 ```
-## [1] 0.6431267
-```
-
-```r
-re$overall[1]
-```
-
-```
-##  Accuracy 
-## 0.6417749
+##           Reference
+## Prediction    0    1
+##          0 1179  708
+##          1  616 1193
 ```
 
 ```r
@@ -825,7 +824,7 @@ re$byClass[1]
 
 ```
 ## Sensitivity 
-##   0.6275644
+##   0.6568245
 ```
 
 ```r
@@ -834,6 +833,7 @@ re$byClass[2]
 
 ```
 ## Specificity 
+<<<<<<< HEAD
 ##   0.6568245
 ```
 Filtered|F1 meansure|Seneitivity|Specificity
@@ -930,9 +930,10 @@ fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
 p_class <- factor(fdat$Final, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+=======
+##   0.6275644
+>>>>>>> 4324d27a36f5c82398b4a12cab89b7b84afbaf87
 ```
-
-![](report_files/figure-html/unnamed-chunk-14-2.png)<!-- -->
 
     
 # Conclusions (including business takeaways and action items)  
