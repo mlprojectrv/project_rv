@@ -769,8 +769,8 @@ x <- dat_o %>%
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
                              T                  ~ 0))
 
-p_class <- factor(x$highlow)
-class_levels <- factor(x$two_year_recid)
+p_class <- factor(x$highlow, levels = c(1,0))
+class_levels <- factor(x$two_year_recid, levels = c(1,0))
 
 re <- confusionMatrix(p_class, class_levels, positive = '1')
 fourfoldplot(re$table)
@@ -785,8 +785,8 @@ y <- dat_o %>%
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
                              T                  ~ 0))
 
-p_class <- factor(y$highlow)
-class_levels <- factor(y$two_year_recid)
+p_class <- factor(y$highlow, levels = c(1,0))
+class_levels <- factor(y$two_year_recid, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table)
 ```
@@ -897,8 +897,8 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
     
 # Conclusions (including business takeaways and action items)  
-1.    False positive  
-Under development  
+1.    Bias
+When we compare the confusion matrix  of the our result there is some clues that might suggest African-americans are getting the short end of the stick. A lower specificity indicate that the algorithm is not as forgiving 
 2.    Score and accuracy   
 Under development  
 3.    Limitations  
