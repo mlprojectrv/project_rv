@@ -216,7 +216,7 @@ No|0.71|0.77|0.53
 Yes|0.64|0.63|0.66  
 
 ## Other Confusion Matrix
-### decision tree  
+## Decision Tree  
 ```{r}
 p_class <- factor(rdat$prediction, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -227,7 +227,7 @@ re <- confusionMatrix(p_class, class_levels)
 j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### NN  
+## NN  
 ```{r}
 p_class <- factor(frdat$NN, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -238,7 +238,7 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### KNN  
+## KNN  
 ```{r}
 p_class <- factor(frdat$KNN, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -249,7 +249,7 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### naive bayes  
+## naive bayes  
 ```{r}
 p_class <- factor(frdat$NG, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -260,7 +260,7 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### Stacking  
+## Stacking  
 ```{r}
 p_class <- factor(frdat$Final, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))

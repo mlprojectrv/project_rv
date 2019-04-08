@@ -799,7 +799,7 @@ No|0.71|0.77|0.53
 Yes|0.64|0.63|0.66  
 
 ## Other Confusion Matrix
-### decision tree  
+## Decision Tree  
 
 ```r
 p_class <- factor(rdat$prediction, levels = c(1,0))
@@ -818,7 +818,7 @@ j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
 
-### NN  
+## NN  
 
 ```r
 p_class <- factor(frdat$NN, levels = c(1,0))
@@ -837,7 +837,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-11-2.png)<!-- -->
 
-### KNN  
+## KNN  
 
 ```r
 p_class <- factor(frdat$KNN, levels = c(1,0))
@@ -856,7 +856,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-12-2.png)<!-- -->
 
-### naive bayes  
+## naive bayes  
 
 ```r
 p_class <- factor(frdat$NG, levels = c(1,0))
@@ -875,7 +875,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
 
-### Stacking  
+## Stacking  
 
 ```r
 p_class <- factor(frdat$Final, levels = c(1,0))
