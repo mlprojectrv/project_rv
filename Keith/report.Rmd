@@ -15,7 +15,7 @@ output:
     alignment: center
 ---
 
-```{r message = FALSE}
+```{r message = FALSE, warning = FALSE}
 ################################library##############################################
 library(tidyverse)
 library(readr)
@@ -169,24 +169,28 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
   
 Algorithm|With race | Without race
 ---------|----------|-------------
-Decision tree|45.6%|44.0%
+Algorithm given|65.7%|None
+Decision tree|50.0%|48.9%
 Neutral network|66%|65%  
 Naïve Baynes|61.8%|55.7% 
 KNN|62.4%|62.9%
 Stacking|63%|62%
 Ensemble|67%|63%    
-## Confusion Matrix  
+## Original Algorithm Confusion Matrix  
+One of the ways we decided to use to assess how the algorithm is to look at how the false positive rate of the algorithms change as we filtered the data at race. If the algorithm doesn’t not discriminate* against race, we could expect an unchanged false positive rate. 
 ```{r}
 x <- dat_o %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
                              T                  ~ 0))
 
-p_class <- factor(x$highlow)
-class_levels <- factor(x$two_year_recid)
+p_class <- factor(x$highlow, levels = c(1,0))
+class_levels <- factor(x$two_year_recid, levels = c(1,0))
 
 re <- confusionMatrix(p_class, class_levels)
-re$table
+fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
+F_meas(re$table)
+re$overall[1]
 re$byClass[1]
 re$byClass[2]
 
@@ -196,13 +200,71 @@ y <- dat_o %>%
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
                              T                  ~ 0))
 
-p_class <- factor(y$highlow)
-class_levels <- factor(y$two_year_recid)
+p_class <- factor(y$highlow, levels = c(1,0))
+class_levels <- factor(y$two_year_recid, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
-re$table
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+F_meas(re$table)
+re$overall[1]
 re$byClass[1]
 re$byClass[2]
 
+```
+## Other Confusion Matrix
+### decision tree  
+```{r}
+p_class <- factor(rdat$prediction, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(rdat$drpre, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
+grid.arrange(p1, p2, ncol = 2)
+```
+
+### NN  
+```{r}
+p_class <- factor(frdat$NN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$NN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+### KNN  
+```{r}
+p_class <- factor(frdat$KNN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$KNN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+### naive bayes  
+```{r}
+p_class <- factor(frdat$NG, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$NG, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+### Stacking  
+```{r}
+p_class <- factor(frdat$Final, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$Final, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
     

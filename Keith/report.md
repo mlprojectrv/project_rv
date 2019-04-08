@@ -27,6 +27,9 @@ library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('../dt_dat.csv')
+rdat <- read_csv('../dt.csv') %>% select(-1)
+frdat <- read_csv('../fr_race.csv') %>% select(-1)
+fdat <- read_csv('../frw_race.csv') %>% select(-1)
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -176,6 +179,7 @@ dat %>% head(5) %>% print.data.frame()
 ## 5              0
 ```
 #### Data after wrangleing(Neutral Network and Naïve Baynes)
+
 
 ###    Decisions made{.tabset}  
 #### Charges
@@ -629,8 +633,7 @@ dat_o$c_charge_desc %>%
 ## [438] Possession of XLR11                                 
 ## 438 Levels:  Abuse Without Great Harm ... Voyeurism
 ```
-#### Race   
-Since one of our goals is to see if the algorithm is biased againest African Americans crimnals, we simply convert all the non-black race to 0, black to 1 (basically a column to 'Isblack'). 
+
 
 
 
@@ -663,7 +666,7 @@ dat_o %>%
         legend.position = c(0.9,0.9))
 ```
 
-![](report_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 #### 2  
 
@@ -683,7 +686,7 @@ dat_o %>%
         legend.position = c(0.9,0.9)) 
 ```
 
-![](report_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 #### 3
 
@@ -697,7 +700,7 @@ dat_o %>%
   labs(y = 'probability', x = 'mpg')
 ```
 
-![](report_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ```r
 dat_o %>% 
@@ -710,7 +713,7 @@ dat_o %>%
   labs(y = 'probability', x = 'mpg')
 ```
 
-![](report_files/figure-html/unnamed-chunk-7-2.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
 
 ###    The planning  
 We mainly used three algorithms for this project, decision tree, neural network, and naïve Baynes. Since we are trying to compare the given predicted score to ours, we were convinced that a regression is best for the task at hand, since the predicted scores are in a scale of 1 to 10. 1 being the inmates will not likely to commit crime in the future and 10 being very likely, our algorithms would suggest a number between 1 and 10 for the predicted, then we would find out how close/far the score is to the target (1 = 10, 0 = 0) compared with the given scores. We also wanted to see if the algorithm is discriminating against each group of people by their colour of skin. A way to find that out is to see the ratio of (false positive) type I error in the non-African-American cases and  African-American cases.  
@@ -724,11 +727,15 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
   
 Algorithm|With race | Without race
 ---------|----------|-------------
-Decision tree|45.6%|44.0%
+Algorithm given|65.7%|None
+Decision tree|50.0%|48.9%
 Neutral network|66%|65%  
-Naïve Baynes|61.8%|55.7%  
-Ensemble|?|?    
-## Confusion Matrix  
+Naïve Baynes|61.8%|55.7% 
+KNN|62.4%|62.9%
+Stacking|63%|62%
+Ensemble|67%|63%    
+## Original Algorithm Confusion Matrix  
+One of the ways we decided to use to assess how the algorithm is to look at how the false positive rate of the algorithms change as we filtered the data at race. If the algorithm doesn’t not discriminate* against race, we could expect an unchanged false positive rate. 
 
 ```r
 x <- dat_o %>% 
@@ -736,18 +743,30 @@ x <- dat_o %>%
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
                              T                  ~ 0))
 
-p_class <- factor(x$highlow)
-class_levels <- factor(x$two_year_recid)
+p_class <- factor(x$highlow, levels = c(1,0))
+class_levels <- factor(x$two_year_recid, levels = c(1,0))
 
 re <- confusionMatrix(p_class, class_levels)
-re$table
+fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
+```r
+F_meas(re$table)
 ```
 
 ```
-##           Reference
-## Prediction    0    1
-##          0 3036 1542
-##          1  927 1709
+## [1] 0.5806013
+```
+
+```r
+re$overall[1]
+```
+
+```
+##  Accuracy 
+## 0.6577488
 ```
 
 ```r
@@ -756,7 +775,7 @@ re$byClass[1]
 
 ```
 ## Sensitivity 
-##   0.7660863
+##   0.5256844
 ```
 
 ```r
@@ -765,7 +784,7 @@ re$byClass[2]
 
 ```
 ## Specificity 
-##   0.5256844
+##   0.7660863
 ```
 
 ```r
@@ -773,19 +792,31 @@ y <- dat_o %>%
   filter(race == 'African-American') %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
 
-p_class <- factor(y$highlow)
-class_levels <- factor(y$two_year_recid)
+p_class <- factor(y$highlow, levels = c(1,0))
+class_levels <- factor(y$two_year_recid, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
-re$table
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-9-2.png)<!-- -->
+
+```r
+F_meas(re$table)
 ```
 
 ```
-##           Reference
-## Prediction    0    1
-##          0 1179  708
-##          1  616 1193
+## [1] 0.6431267
+```
+
+```r
+re$overall[1]
+```
+
+```
+##  Accuracy 
+## 0.6417749
 ```
 
 ```r
@@ -794,7 +825,7 @@ re$byClass[1]
 
 ```
 ## Sensitivity 
-##   0.6568245
+##   0.6275644
 ```
 
 ```r
@@ -803,8 +834,103 @@ re$byClass[2]
 
 ```
 ## Specificity 
-##   0.6275644
+##   0.6568245
 ```
+## Other Confusion Matrix
+### decision tree  
+
+```r
+p_class <- factor(rdat$prediction, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+```r
+p_class <- factor(rdat$drpre, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
+
+### NN  
+
+```r
+p_class <- factor(frdat$NN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$NN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-11-2.png)<!-- -->
+
+### KNN  
+
+```r
+p_class <- factor(frdat$KNN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$KNN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-12-2.png)<!-- -->
+
+### naive bayes  
+
+```r
+p_class <- factor(frdat$NG, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$NG, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
+
+### Stacking  
+
+```r
+p_class <- factor(frdat$Final, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$Final, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-14-2.png)<!-- -->
 
     
 # Conclusions (including business takeaways and action items)  
