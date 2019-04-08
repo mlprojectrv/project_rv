@@ -664,7 +664,7 @@ Since one of our goals is to see if the algorithm is biased against African Amer
 
 ### Data analysis{.tabset}  
 #### 1  
-The graph shows the density ofthe predicted score from the algorithm. We can see a that in all three age groups, african-americans has a higher density beyond the 5.0 in score; with non-african-american criminals having distrabutions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two.
+The graph shows the density of the predicted score from the algorithm. We can see that in all three age groups, african-americans have a higher density beyond the 5.0 score; with non-african-american criminals having distributions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two.
 
 ```r
 dat_o %>% 
@@ -798,12 +798,8 @@ Filtered|F1 measure|Seneitivity|Specificity
 No|0.71|0.77|0.53
 Yes|0.64|0.63|0.66  
 
-<<<<<<< HEAD
-## Other Confusion Matrix
-## Decision Tree  
-=======
 ## Confusion Matrix(Decision Tree)  
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
+
 
 ```r
 p_class <- factor(rdat$prediction, levels = c(1,0))
@@ -821,12 +817,10 @@ j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 ```
 
 ![](report_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
+ 
 
-<<<<<<< HEAD
-## NN  
-=======
 ## Confusion Matrix(Neutral Network)
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
+
 
 ```r
 p_class <- factor(frdat$NN, levels = c(1,0))
@@ -844,11 +838,9 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-11-2.png)<!-- -->
 
-<<<<<<< HEAD
-## KNN  
-=======
+
 ## Confusion Matrix(KNN)  
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
+
 
 ```r
 p_class <- factor(frdat$KNN, levels = c(1,0))
@@ -867,11 +859,9 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-12-2.png)<!-- -->
 
-<<<<<<< HEAD
-## naive bayes  
-=======
+
 ## Confusion Matrix(Naïve Baynes)
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
+
 
 ```r
 p_class <- factor(frdat$NG, levels = c(1,0))
@@ -890,11 +880,8 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
 
-<<<<<<< HEAD
-## Stacking  
-=======
 ## Confusion Matrix(Stacking)
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
+
 
 ```r
 p_class <- factor(frdat$Final, levels = c(1,0))
