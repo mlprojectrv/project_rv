@@ -35,12 +35,12 @@ race <- dat_n %>%
     c_charge_degree == "M" ~ "1",
     c_charge_degree == "F" ~ "0"
   ), race = case_when(
-    race == "Caucasian" ~ "1",
-    race == "African-American" ~ "0",
-    race == "Hispanic" ~ "1",
-    race == "Native American" ~ "1",
-    race == "Asian" ~ "1",
-    race == "Other" ~ "1"))
+    race == "Caucasian" ~ "0",
+    race == "African-American" ~ "1",
+    race == "Hispanic" ~ "2",
+    race == "Native American" ~ "3",
+    race == "Asian" ~ "4",
+    race == "Other" ~ "5"))
 
 race_data <- race %>%
   select(-two_year_recid)
