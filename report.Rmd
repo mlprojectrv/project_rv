@@ -41,11 +41,11 @@ dat_nnn <- read_csv('race2.csv')
     
 # Introduction  
 ###    The source  
-This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in information of a criminal, for instance, age, gender, race, and criminal records, then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains paragraphs of argument, various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
+This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in criminal information such as age, gender, race, and criminal records then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains arguments with various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
 
 ###     Our take  
 
-We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 years period after they were released from jail.   
+We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict the criminals' recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 year period after they were released from jail.  
 
 ###    Our Goals  
 There are two main goals for our project:  
@@ -55,32 +55,32 @@ There are two main goals for our project:
   
 #  Data Preparation  
 ###    Understanding the data  
-Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consist of 53 columns and 10 observation.  
+Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consists of 53 columns and 10 observations.  
   
   
-There are a few observations from the data.   
+There are a few observations from the data.  
   
 
 ### Observation{.tabset}  
 #### The converting
-To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Baynes (classifier), Decision tree (classifier), Neutral network classification, and lastly neutral network regression for the ensemble part. The data set contains numeric, categorical and nominal columns, with and binary target (recidivist or non-recidivist); we decided that we would have to convert our data to fit our models.   
+To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Bayes (classifier), Decision tree (classifier), Neural network (classifier), and lastly Neural Network (regressor) for the ensemble part. The data set contains numeric, categorical and nominal columns with the binary target columne (recidivist or non-recidivist); we decided that we would have to convert our data to fit our models.   
 
 #### Original data(sample of 5)
 ```{r}
 dat_o %>% head(5) %>% print.data.frame()
 ```
-#### Data after wrangling(decision tree)
+#### Data after wrangling(Decision Tree)
 ```{r}
 dat %>% head(5) %>% print.data.frame()
 ```
-#### Data after wrangleing(Neutral Network and Naïve Baynes)
+#### Data after wrangleing(Neural Network and Naïve Bayes)
 ```{r}
 dat_nnn %>% head(5) %>% print.data.frame()
 ```
 
 ###    Decisions made{.tabset}  
 #### Charges
-One of the challenges of the data is the c_charge_desc that stores the description of the crime for what the inmate was charged; there were 437 different charges description in our data with over 7000 observations. We had to do a local encoding for each of them for the neural network models.    
+One of the challenges of the data is the c_charge_desc that stores the description of the crime for what the inmate was charged; there were 437 different charges description in our data with over 7000 observations. We had to do a local encoding for each of them for the Neural Network models.    
 
 #### List of charges  
 ```{r}
@@ -88,7 +88,7 @@ dat_o$c_charge_desc %>%
   unique() 
 ```
 #### Race   
-Since one of our goals is to see if the algorithm is biased againest African Americans crimnals, we simply convert all the non-black race to 0, black to 1 (basically a column to 'Isblack'). 
+Since one of our goals is to see if the algorithm is biased against African Americans criminals, we simply convert all the non-black race to 0 and black to 1 (basically a column to 'Isblack'). 
 
 
 
@@ -97,7 +97,7 @@ Since one of our goals is to see if the algorithm is biased againest African Ame
 
 ### Data analysis{.tabset}  
 #### 1  
-The graph shows the density ofthe predicted score from the algorithm. We can see a that in all three age groups, african-americans has a higher density beyond the 5.0 in score; with non-african-american criminals having distrabutions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two. 
+The graph shows the density ofthe predicted score from the algorithm. We can see a that in all three age groups, african-americans has a higher density beyond the 5.0 in score; with non-african-american criminals having distrabutions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two.
 ```{r message = FALSE}
 dat_o %>% 
   mutate(age_cat = fct_relevel(age_cat, 
