@@ -24,13 +24,6 @@ library(ggplot2)
 library(ggridges)
 library(pander)
 library(caret)
-```
-
-```
-## Warning: package 'caret' was built under R version 3.5.3
-```
-
-```r
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('../dt_dat.csv')
