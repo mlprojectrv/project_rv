@@ -35,26 +35,8 @@ library(caret)
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('../dt_dat.csv')
 rdat <- read_csv('../dt.csv') %>% select(-1)
-```
-
-```
-## Warning: Missing column names filled in: 'X1' [1]
-```
-
-```r
 frdat <- read_csv('../fr_race.csv') %>% select(-1)
-```
-
-```
-## Warning: Missing column names filled in: 'X1' [1]
-```
-
-```r
 fdat <- read_csv('../frw_race.csv') %>% select(-1)
-```
-
-```
-## Warning: Missing column names filled in: 'X1' [1]
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -752,13 +734,14 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
   
 Algorithm|With race | Without race
 ---------|----------|-------------
-Decision tree|45.6%|44.0%
+Given Algorithm|65.6%|None
+Decision tree|50.6%|49.0%
 Neutral network|66%|65%  
 Naïve Baynes|61.8%|55.7% 
 KNN|62.4%|62.9%
 Stacking|63%|62%
 Ensemble|67%|63%    
-## Confusion Matrix  
+## Confusion Matrix for original algorithm
 
 ```r
 x <- dat_o %>% 
@@ -769,34 +752,11 @@ x <- dat_o %>%
 p_class <- factor(x$highlow)
 class_levels <- factor(x$two_year_recid)
 
-re <- confusionMatrix(p_class, class_levels)
-re$table
+re <- confusionMatrix(p_class, class_levels, positive = '1')
+fourfoldplot(re$table)
 ```
 
-```
-##           Reference
-## Prediction    0    1
-##          0 3036 1542
-##          1  927 1709
-```
-
-```r
-re$byClass[1]
-```
-
-```
-## Sensitivity 
-##   0.7660863
-```
-
-```r
-re$byClass[2]
-```
-
-```
-## Specificity 
-##   0.5256844
-```
+![](report_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 ```r
 y <- dat_o %>% 
@@ -808,35 +768,16 @@ y <- dat_o %>%
 p_class <- factor(y$highlow)
 class_levels <- factor(y$two_year_recid)
 re <- confusionMatrix(p_class, class_levels)
-re$table
+fourfoldplot(re$table)
 ```
 
-```
-##           Reference
-## Prediction    0    1
-##          0 1179  708
-##          1  616 1193
-```
+![](report_files/figure-html/unnamed-chunk-9-2.png)<!-- -->
 
-```r
-re$byClass[1]
-```
-
-```
-## Sensitivity 
-##   0.6568245
-```
-
-```r
-re$byClass[2]
-```
-
-```
-## Specificity 
-##   0.6275644
-```
 Filtered|F1 meansure|Seneitivity|Specificity
----------|----------|-------------
+---------|----------|-------------|----------
+No|0.71|0.77|0.53
+Yes|0.64|0.63|0.66  
+
 ## Other Confusion Matrix
 ### decision tree  
 
