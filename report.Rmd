@@ -15,7 +15,7 @@ output:
     alignment: center
 ---
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 ################################library##############################################
 library(tidyverse)
 library(readr)
@@ -25,8 +25,11 @@ library(pander)
 library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
-dat <- read_csv('dt_dat.csv')
-dat_nnn <- read_csv('race2.csv')
+dat <- read_csv('./dt_dat.csv')
+rdat <- read_csv('./dt.csv') %>% select(-1)
+frdat <- read_csv('./fr_race.csv') %>% select(-1)
+fdat <- read_csv('./frw_race.csv') %>% select(-1)
+dat_nnn <- read_csv('Song/race2.csv')
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -176,33 +179,98 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
   
 Algorithm|With race | Without race
 ---------|----------|-------------
-Decision tree|45.6%|44.0%
-Neutral network|66.6%|67.92%  
-Naïve Baynes|63.22%|62.77%  
-Ensemble|?|?    
-## Confusion Matrix  
+Given Algorithm|65.6%|None
+Decision tree|50.6%|49.0%
+Neutral network|66%|65%  
+Naïve Baynes|61.8%|55.7% 
+KNN|62.4%|62.9%
+Stacking|63%|67%     
+## Confusion Matrix for original algorithm
 ```{r}
 x <- dat_o %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
+
 p_class <- factor(x$highlow)
 class_levels <- factor(x$two_year_recid)
 
-confusionMatrix(p_class, class_levels)
-
+re <- confusionMatrix(p_class, class_levels, positive = '1')
+fourfoldplot(re$table)
 
 y <- dat_o %>% 
   filter(race == 'African-American') %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
 
 p_class <- factor(y$highlow)
 class_levels <- factor(y$two_year_recid)
-confusionMatrix(p_class, class_levels)
-
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table)
 ```
+
+Filtered|F1 meansure|Seneitivity|Specificity
+---------|----------|-------------|----------
+No|0.71|0.77|0.53
+Yes|0.64|0.63|0.66  
+
+## Other Confusion Matrix
+### decision tree  
+```{r}
+p_class <- factor(rdat$prediction, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+i <- fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(rdat$drpre, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
+```
+
+### NN  
+```{r}
+p_class <- factor(frdat$NN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$NN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+### KNN  
+```{r}
+p_class <- factor(frdat$KNN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$KNN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+### naive bayes  
+```{r}
+p_class <- factor(frdat$NG, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$NG, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+### Stacking  
+```{r}
+p_class <- factor(frdat$Final, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+p_class <- factor(fdat$Final, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
 
     
 # Conclusions (including business takeaways and action items)  
@@ -216,4 +284,4 @@ Under development
 # Lessons Learned  
 1.    Algorithms are tools  
 We realised recidivism is a very tricky study and the more we dig into the topic, the more we see how sometimes human bias could easily be introduced to the data gathering process. A learning algorithm is asked to show the patterns in the data through punishments and reinforcements (error and weights), and when used improperly, could create major misunderstanding and fall into the trap of prejudice and over-generalizations.  
-  
+

@@ -26,11 +26,16 @@ library(pander)
 library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
-dat <- read_csv('dt_dat.csv')
-dat_nnn <- read_csv('race2.csv')
+dat <- read_csv('./dt_dat.csv')
+rdat <- read_csv('./dt.csv') %>% select(-1)
+frdat <- read_csv('./fr_race.csv') %>% select(-1)
+fdat <- read_csv('./frw_race.csv') %>% select(-1)
+dat_nnn <- read_csv('Song/race2.csv')
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
+
+
 
 ### Team Info
 1. Team members: 
@@ -40,11 +45,11 @@ dat_nnn <- read_csv('race2.csv')
     
 # Introduction  
 ###    The source  
-This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in information of a criminal, for instance, age, gender, race, and criminal records, then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains paragraphs of argument, various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
+This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in criminal information such as age, gender, race, and criminal records then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains arguments with various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
 
 ###     Our take  
 
-We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 years period after they were released from jail.   
+We, as a team, chose to investigate this data that recorded inmates’ information that was used to predict the criminals' recidivism rate before they were sentenced jail time. This data set shows a column with the predicted score and whether these individuals ended up committing a crime again in the 2 year period after they were released from jail.  
 
 ###    Our Goals  
 There are two main goals for our project:  
@@ -54,15 +59,15 @@ There are two main goals for our project:
   
 #  Data Preparation  
 ###    Understanding the data  
-Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consist of 53 columns and 10 observation.  
+Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consists of 53 columns and 10 observations.  
   
   
-There are a few observations from the data.   
+There are a few observations from the data.  
   
 
 ### Observation{.tabset}  
 #### The converting
-To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Baynes (classifier), Decision tree (classifier), Neutral network classification, and lastly neutral network regression for the ensemble part. The data set contains numeric, categorical and nominal columns, with and binary target (recidivist or non-recidivist); we decided that we would have to convert our data to fit our models.   
+To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Bayes (classifier), Decision tree (classifier), Neural network (classifier), and lastly Neural Network (regressor) for the ensemble part. The data set contains numeric, categorical and nominal columns with the binary target columne (recidivist or non-recidivist); we decided that we would have to convert our data to fit our models.   
 
 #### Original data(sample of 5)
 
@@ -150,7 +155,7 @@ dat_o %>% head(5) %>% print.data.frame()
 ## 4              0
 ## 5              0
 ```
-#### Data after wrangling(decision tree)
+#### Data after wrangling(Decision Tree)
 
 ```r
 dat %>% head(5) %>% print.data.frame()
@@ -176,7 +181,7 @@ dat %>% head(5) %>% print.data.frame()
 ## 4              0
 ## 5              0
 ```
-#### Data after wrangleing(Neutral Network and Naïve Baynes)
+#### Data after wrangleing(Neural Network and Naïve Bayes)
 
 ```r
 dat_nnn %>% head(5) %>% print.data.frame()
@@ -199,7 +204,7 @@ dat_nnn %>% head(5) %>% print.data.frame()
 
 ###    Decisions made{.tabset}  
 #### Charges
-One of the challenges of the data is the c_charge_desc that stores the description of the crime for what the inmate was charged; there were 437 different charges description in our data with over 7000 observations. We had to do a local encoding for each of them for the neural network models.    
+One of the challenges of the data is the c_charge_desc that stores the description of the crime for what the inmate was charged; there were 437 different charges description in our data with over 7000 observations. We had to do a local encoding for each of them for the Neural Network models.    
 
 #### List of charges  
 
@@ -650,7 +655,7 @@ dat_o$c_charge_desc %>%
 ## 438 Levels:  Abuse Without Great Harm ... Voyeurism
 ```
 #### Race   
-Since one of our goals is to see if the algorithm is biased againest African Americans crimnals, we simply convert all the non-black race to 0, black to 1 (basically a column to 'Isblack'). 
+Since one of our goals is to see if the algorithm is biased against African Americans criminals, we simply convert all the non-black race to 0 and black to 1 (basically a column to 'Isblack'). 
 
 
 
@@ -659,7 +664,7 @@ Since one of our goals is to see if the algorithm is biased againest African Ame
 
 ### Data analysis{.tabset}  
 #### 1  
-The graph shows the density ofthe predicted score from the algorithm. We can see a that in all three age groups, african-americans has a higher density beyond the 5.0 in score; with non-african-american criminals having distrabutions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two. 
+The graph shows the density ofthe predicted score from the algorithm. We can see a that in all three age groups, african-americans has a higher density beyond the 5.0 in score; with non-african-american criminals having distrabutions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two.
 
 ```r
 dat_o %>% 
@@ -750,94 +755,145 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
   
 Algorithm|With race | Without race
 ---------|----------|-------------
-Decision tree|45.6%|44.0%
-Neutral network|66.6%|67.92%  
-Naïve Baynes|63.22%|62.77%  
-Ensemble|?|?    
-## Confusion Matrix  
+Given Algorithm|65.6%|None
+Decision tree|50.6%|49.0%
+Neutral network|66%|65%  
+Naïve Baynes|61.8%|55.7% 
+KNN|62.4%|62.9%
+Stacking|63%|67%     
+## Confusion Matrix for original algorithm
 
 ```r
 x <- dat_o %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
+
 p_class <- factor(x$highlow)
 class_levels <- factor(x$two_year_recid)
 
-confusionMatrix(p_class, class_levels)
+re <- confusionMatrix(p_class, class_levels, positive = '1')
+fourfoldplot(re$table)
 ```
 
-```
-## Confusion Matrix and Statistics
-## 
-##           Reference
-## Prediction    0    1
-##          0 3036 1542
-##          1  927 1709
-##                                           
-##                Accuracy : 0.6577          
-##                  95% CI : (0.6467, 0.6687)
-##     No Information Rate : 0.5493          
-##     P-Value [Acc > NIR] : < 2.2e-16       
-##                                           
-##                   Kappa : 0.2968          
-##                                           
-##  Mcnemar's Test P-Value : < 2.2e-16       
-##                                           
-##             Sensitivity : 0.7661          
-##             Specificity : 0.5257          
-##          Pos Pred Value : 0.6632          
-##          Neg Pred Value : 0.6483          
-##              Prevalence : 0.5493          
-##          Detection Rate : 0.4208          
-##    Detection Prevalence : 0.6346          
-##       Balanced Accuracy : 0.6459          
-##                                           
-##        'Positive' Class : 0               
-## 
-```
+![](report_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 ```r
 y <- dat_o %>% 
   filter(race == 'African-American') %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
 
 p_class <- factor(y$highlow)
 class_levels <- factor(y$two_year_recid)
-confusionMatrix(p_class, class_levels)
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table)
 ```
 
+![](report_files/figure-html/unnamed-chunk-9-2.png)<!-- -->
+
+Filtered|F1 meansure|Seneitivity|Specificity
+---------|----------|-------------|----------
+No|0.71|0.77|0.53
+Yes|0.64|0.63|0.66  
+
+## Other Confusion Matrix
+### decision tree  
+
+```r
+p_class <- factor(rdat$prediction, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+i <- fourfoldplot(re$table, color = c('#ff3f7f', '#ff7f3f'))
 ```
-## Confusion Matrix and Statistics
-## 
-##           Reference
-## Prediction    0    1
-##          0 1179  708
-##          1  616 1193
-##                                           
-##                Accuracy : 0.6418          
-##                  95% CI : (0.6261, 0.6573)
-##     No Information Rate : 0.5143          
-##     P-Value [Acc > NIR] : < 2e-16         
-##                                           
-##                   Kappa : 0.284           
-##                                           
-##  Mcnemar's Test P-Value : 0.01239         
-##                                           
-##             Sensitivity : 0.6568          
-##             Specificity : 0.6276          
-##          Pos Pred Value : 0.6248          
-##          Neg Pred Value : 0.6595          
-##              Prevalence : 0.4857          
-##          Detection Rate : 0.3190          
-##    Detection Prevalence : 0.5106          
-##       Balanced Accuracy : 0.6422          
-##                                           
-##        'Positive' Class : 0               
-## 
+
+![](report_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+```r
+p_class <- factor(rdat$drpre, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 ```
+
+![](report_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
+
+### NN  
+
+```r
+p_class <- factor(frdat$NN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$NN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-11-2.png)<!-- -->
+
+### KNN  
+
+```r
+p_class <- factor(frdat$KNN, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$KNN, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-12-2.png)<!-- -->
+
+### naive bayes  
+
+```r
+p_class <- factor(frdat$NG, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$NG, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
+
+### Stacking  
+
+```r
+p_class <- factor(frdat$Final, levels = c(1,0))
+class_levels <- factor(dat$two_year_recid, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
+```
+
+![](report_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+
+```r
+p_class <- factor(fdat$Final, levels = c(1,0))
+re <- confusionMatrix(p_class, class_levels)
+fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
+```
+
+![](report_files/figure-html/unnamed-chunk-14-2.png)<!-- -->
+
 
     
 # Conclusions (including business takeaways and action items)  
@@ -851,4 +907,4 @@ Under development
 # Lessons Learned  
 1.    Algorithms are tools  
 We realised recidivism is a very tricky study and the more we dig into the topic, the more we see how sometimes human bias could easily be introduced to the data gathering process. A learning algorithm is asked to show the patterns in the data through punishments and reinforcements (error and weights), and when used improperly, could create major misunderstanding and fall into the trap of prejudice and over-generalizations.  
-  
+
