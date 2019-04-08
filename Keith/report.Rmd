@@ -15,7 +15,7 @@ output:
     alignment: center
 ---
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 ################################library##############################################
 library(tidyverse)
 library(readr)
@@ -169,13 +169,14 @@ Accuracy is one the way to assess the race variable is in fact helping in a sign
   
 Algorithm|With race | Without race
 ---------|----------|-------------
-Decision tree|45.6%|44.0%
+Given Algorithm|65.6%|None
+Decision tree|50.6%|49.0%
 Neutral network|66%|65%  
 Naïve Baynes|61.8%|55.7% 
 KNN|62.4%|62.9%
 Stacking|63%|62%
 Ensemble|67%|63%    
-## Confusion Matrix  
+## Confusion Matrix for original algorithm
 ```{r}
 x <- dat_o %>% 
   select(race, two_year_recid, decile_score.1) %>% 
@@ -185,10 +186,8 @@ x <- dat_o %>%
 p_class <- factor(x$highlow)
 class_levels <- factor(x$two_year_recid)
 
-re <- confusionMatrix(p_class, class_levels)
-re$table
-re$byClass[1]
-re$byClass[2]
+re <- confusionMatrix(p_class, class_levels, positive = '1')
+fourfoldplot(re$table)
 
 y <- dat_o %>% 
   filter(race == 'African-American') %>% 
@@ -199,13 +198,14 @@ y <- dat_o %>%
 p_class <- factor(y$highlow)
 class_levels <- factor(y$two_year_recid)
 re <- confusionMatrix(p_class, class_levels)
-re$table
-re$byClass[1]
-re$byClass[2]
-
+fourfoldplot(re$table)
 ```
+
 Filtered|F1 meansure|Seneitivity|Specificity
----------|----------|-------------
+---------|----------|-------------|----------
+No|0.71|0.77|0.53
+Yes|0.64|0.63|0.66  
+
 ## Other Confusion Matrix
 ### decision tree  
 ```{r}
