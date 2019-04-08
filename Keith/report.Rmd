@@ -41,7 +41,7 @@ fdat <- read_csv('../frw_race.csv') %>% select(-1)
     
 # Introduction  
 ###    The source  
-This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in information of a criminal, for instance, age, gender, race, and criminal records, then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains paragraphs of argument, various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
+This project is mainly inspired by a statistical study online; in this study, the narrator introduces the reader to an algorithm the justice system in the US is currently using. This algorithm takes in information of a criminal such as age, gender, race, and criminal records then produces a score for the person’s ‘risk of recidivism’ which would be provided as reference to the judge in deciding the sentence of a criminal; the study contains arguments with various plots and charts that surround the same claim : the algorithm is biased against black criminal.     
 
 ###     Our take  
 
