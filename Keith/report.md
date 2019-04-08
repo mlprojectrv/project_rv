@@ -24,13 +24,6 @@ library(ggplot2)
 library(ggridges)
 library(pander)
 library(caret)
-```
-
-```
-## Warning: package 'caret' was built under R version 3.5.3
-```
-
-```r
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
 dat <- read_csv('../dt_dat.csv')
@@ -89,7 +82,7 @@ There are a few observations from the data.
 
 ### Observation{.tabset}  
 #### The converting
-To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Baynes (classifier), Decision tree (classifier), Neutral network classification, and lastly neutral network regression for the ensemble part. The data set contains numeric, categorical and nominal columns, with and binary target (recidivist or non-recidivist); we decided that we would have to convert our data to fit our models.   
+To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Bayes (classifier), Decision tree (classifier), Neural network (classifier), and lastly Neural Network (regressor) for the ensemble part. The data set contains numeric, categorical and nominal columns with the binary target columne (recidivist or non-recidivist); we decided that we would have to convert our data to fit our models.   
 
 #### Original data(sample of 5)
 
@@ -177,7 +170,7 @@ dat_o %>% head(5) %>% print.data.frame()
 ## 4              0
 ## 5              0
 ```
-#### Data after wrangling(decision tree)
+#### Data after wrangling(Decision Tree)
 
 ```r
 dat %>% head(5) %>% print.data.frame()
@@ -203,7 +196,7 @@ dat %>% head(5) %>% print.data.frame()
 ## 4              0
 ## 5              0
 ```
-#### Data after wrangleing(Neutral Network and Naïve Baynes)
+#### Data after wrangleing(Neural Network and Naïve Baynes)
 
 
 ###    Decisions made{.tabset}  
@@ -833,8 +826,7 @@ re$byClass[2]
 
 ```
 ## Specificity 
-<<<<<<< HEAD
-##   0.6568245
+##   0.6275644
 ```
 Filtered|F1 meansure|Seneitivity|Specificity
 ---------|----------|-------------
@@ -930,10 +922,10 @@ fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
 p_class <- factor(fdat$Final, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
-=======
-##   0.6275644
->>>>>>> 4324d27a36f5c82398b4a12cab89b7b84afbaf87
 ```
+
+![](report_files/figure-html/unnamed-chunk-14-2.png)<!-- -->
+
 
     
 # Conclusions (including business takeaways and action items)  

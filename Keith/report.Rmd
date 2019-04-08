@@ -204,7 +204,6 @@ re$byClass[1]
 re$byClass[2]
 
 ```
-<<<<<<< HEAD
 Filtered|F1 meansure|Seneitivity|Specificity
 ---------|----------|-------------
 ## Other Confusion Matrix
@@ -262,8 +261,7 @@ p_class <- factor(fdat$Final, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
-=======
->>>>>>> 4324d27a36f5c82398b4a12cab89b7b84afbaf87
+
 
     
 # Conclusions (including business takeaways and action items)  
