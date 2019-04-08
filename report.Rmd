@@ -210,13 +210,12 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table)
 ```
 
-Filtered|F1 meansure|Seneitivity|Specificity
+Filtered|F1 measure|Seneitivity|Specificity
 ---------|----------|-------------|----------
 No|0.71|0.77|0.53
 Yes|0.64|0.63|0.66  
 
-## Other Confusion Matrix
-### decision tree  
+## Confusion Matrix(Decision Tree)  
 ```{r}
 p_class <- factor(rdat$prediction, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -227,10 +226,9 @@ re <- confusionMatrix(p_class, class_levels)
 j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### NN  
+## Confusion Matrix(Neutral Network)
 ```{r}
 p_class <- factor(frdat$NN, levels = c(1,0))
-class_levels <- factor(dat$two_year_recid, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color =  c('#ff3f7f', '#ff7f3f'))
 p_class <- factor(fdat$NN, levels = c(1,0))
@@ -238,7 +236,7 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### KNN  
+## Confusion Matrix(KNN)  
 ```{r}
 p_class <- factor(frdat$KNN, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -249,7 +247,7 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### naive bayes  
+## Confusion Matrix(Naïve Baynes)
 ```{r}
 p_class <- factor(frdat$NG, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -260,7 +258,7 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
-### Stacking  
+## Confusion Matrix(Stacking)
 ```{r}
 p_class <- factor(frdat$Final, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -271,13 +269,25 @@ re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
-
+## Table
+Algorithm and dataset|F1 measure|Seneitivity|Specificity
+---------|----------|-------------|----------
+Decesion Tree(w/ race)|0.68|0.96|0.28
+Decesion Tree(w/o race)|0.89|0.95|0.35
+Neutral Network(w/ race)|0.59|0.52|0.8
+Neutral Network(w/o race)|0.61|0.58|0.74
+KNN (w/ race)|0.73|0.71|0.80
+KNN (w/o race)|0.72|0.7|0.8
+Naïve Baynes(w/ race)|0.37|0.25|0.92
+Naïve Baynes(w/o race)|0.36|0.24|0.93
+Stacking(w/ race)|0.6|0.69|0.51
+Stacking(w/o race)|0.61|0.58|0.74
     
 # Conclusions (including business takeaways and action items)  
-1.    Bias
-When we compare the confusion matrix  of the our result there is some clues that might suggest African-americans are getting the short end of the stick. A lower specificity indicate that the algorithm is not as forgiving 
+1.    Bias  
+When we compare the confusion matrix  of the our result there is some clues that might suggest African-americans are getting the short end of the stick. A lower specificity indicate that the algorithm is not as forgiving and as good at excluding true negatives from the data. However, it also shows a seneitivity of .77, a better score that the overall one. With a lower F1 measure, our do see a drop of performance in prediction for african-american. 
 2.    Score and accuracy   
-Under development  
+The reason why we compare the two different accuracy scores from each algorithm is to study whether the race would affect the result or not. From the accuracy score table, we can see that there are no significant differences between with and without race score. This concludes that race in criminal data does not affect the result. 
 3.    Limitations  
    We suspect that our data might suffer from an unjust bias because of the self-reinforcing nature of the algorithm. Since the given predicted score is used as an assessment for the judge to decide the sentence of a criminal, which involves how long he/she will be staying in jail. It might, in fact, reinforcing the result of our target (recidivism rate) thinking that the longer a person stays in the justice system(prison), the more likely he/she will end up in a cell again.   
    
