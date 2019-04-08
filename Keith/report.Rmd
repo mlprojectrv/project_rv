@@ -25,7 +25,10 @@ library(pander)
 library(caret)
 ################################Read File############################################
 dat_o <- read.csv('https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv')
-dat <- read_csv('dt_dat.csv')
+dat <- read_csv('../dt_dat.csv')
+rdat <- read_csv('../dt.csv') %>% select(-1)
+frdat <- read_csv('../fr_race.csv') %>% select(-1)
+fdat <- read_csv('../frw_race.csv') %>% select(-1)
 ```
 
 ![](https://s3.amazonaws.com/user-media.venngage.com/470824-9369c5da7d87766af4f57f6d0421e5e9.jpg)  
@@ -71,6 +74,9 @@ dat_o %>% head(5) %>% print.data.frame()
 dat %>% head(5) %>% print.data.frame()
 ```
 #### Data after wrangleing(Neutral Network and Naïve Baynes)
+```{r}
+
+```
 
 ###    Decisions made{.tabset}  
 #### Charges
@@ -81,8 +87,7 @@ One of the challenges of the data is the c_charge_desc that stores the descripti
 dat_o$c_charge_desc %>% 
   unique() 
 ```
-#### Race   
-Since one of our goals is to see if the algorithm is biased againest African Americans crimnals, we simply convert all the non-black race to 0, black to 1 (basically a column to 'Isblack'). 
+
 
 
 
@@ -166,29 +171,37 @@ Algorithm|With race | Without race
 ---------|----------|-------------
 Decision tree|45.6%|44.0%
 Neutral network|66%|65%  
-Naïve Baynes|61.8%|55.7%  
-Ensemble|?|?    
+Naïve Baynes|61.8%|55.7% 
+KNN|62.4%|62.9%
+Stacking|63%|62%
+Ensemble|67%|63%    
 ## Confusion Matrix  
 ```{r}
 x <- dat_o %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
+
 p_class <- factor(x$highlow)
 class_levels <- factor(x$two_year_recid)
 
-confusionMatrix(p_class, class_levels)
-
+re <- confusionMatrix(p_class, class_levels)
+re$table
+re$byClass[1]
+re$byClass[2]
 
 y <- dat_o %>% 
   filter(race == 'African-American') %>% 
   select(race, two_year_recid, decile_score.1) %>% 
   mutate(highlow = case_when(decile_score.1 > 5 ~ 1,
-                             T                  ~ 0)) 
+                             T                  ~ 0))
 
 p_class <- factor(y$highlow)
 class_levels <- factor(y$two_year_recid)
-confusionMatrix(p_class, class_levels)
+re <- confusionMatrix(p_class, class_levels)
+re$table
+re$byClass[1]
+re$byClass[2]
 
 ```
 
