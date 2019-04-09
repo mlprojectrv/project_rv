@@ -798,12 +798,7 @@ Filtered|F1 measure|Seneitivity|Specificity
 No|0.71|0.77|0.53
 Yes|0.64|0.63|0.66  
 
-<<<<<<< HEAD
-## Other Confusion Matrix
-## Decision Tree  
-=======
 ## Confusion Matrix(Decision Tree)  
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
 
 ```r
 p_class <- factor(rdat$prediction, levels = c(1,0))
@@ -822,11 +817,7 @@ j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
 
-<<<<<<< HEAD
-## NN  
-=======
 ## Confusion Matrix(Neutral Network)
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
 
 ```r
 p_class <- factor(frdat$NN, levels = c(1,0))
@@ -844,11 +835,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-11-2.png)<!-- -->
 
-<<<<<<< HEAD
-## KNN  
-=======
 ## Confusion Matrix(KNN)  
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
 
 ```r
 p_class <- factor(frdat$KNN, levels = c(1,0))
@@ -867,11 +854,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-12-2.png)<!-- -->
 
-<<<<<<< HEAD
-## naive bayes  
-=======
 ## Confusion Matrix(Naïve Baynes)
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
 
 ```r
 p_class <- factor(frdat$NG, levels = c(1,0))
@@ -890,11 +873,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ![](report_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
 
-<<<<<<< HEAD
-## Stacking  
-=======
 ## Confusion Matrix(Stacking)
->>>>>>> 0edd1bfe6842e602a1ff85200dd277aefcc2d2c6
 
 ```r
 p_class <- factor(frdat$Final, levels = c(1,0))
@@ -933,9 +912,15 @@ When we compare the confusion matrix  of the our result there is some clues that
 2.    Score and accuracy   
 The reason why we compare the two different accuracy scores from each algorithm is to study whether the race would affect the result or not. From the accuracy score table, we can see that there are no significant differences between with and without race score. This concludes that race in criminal data does not affect the result. 
 3.    Limitations  
-   We suspect that our data might suffer from an unjust bias because of the self-reinforcing nature of the algorithm. Since the given predicted score is used as an assessment for the judge to decide the sentence of a criminal, which involves how long he/she will be staying in jail. It might, in fact, reinforcing the result of our target (recidivism rate) thinking that the longer a person stays in the justice system(prison), the more likely he/she will end up in a cell again.   
+We suspect that our data might suffer from an unjust bias because of the self-reinforcing nature of the algorithm. Since the given predicted score is used as an assessment for the judge to decide the sentence of a criminal, which involves how long he/she will be staying in jail. It might, in fact, reinforcing the result of our target (recidivism rate) thinking that the longer a person stays in the justice system(prison), the more likely he/she will end up in a cell again.   
+4.    The true question
+Although we did spend a lot of time on 
    
 # Lessons Learned  
 1.    Algorithms are tools  
 We realised recidivism is a very tricky study and the more we dig into the topic, the more we see how sometimes human bias could easily be introduced to the data gathering process. A learning algorithm is asked to show the patterns in the data through punishments and reinforcements (error and weights), and when used improperly, could create major misunderstanding and fall into the trap of prejudice and over-generalizations.  
+
+The success of a machine learning algorithm does not rely on how much hidden patterns are found by it only.
+When we talk about how problems could be solved by machine learning, one often mentioned reason is how machine learning studies patterns that are hidden or hard to observed by human. Machine learning algorithms record and remember those subtle changes and trends, then utilizes the data to predict or make judgments base on the given information. One way we assess the performance of an algorithm is to see if it is gaining more insight, discovering hidden patterns. However, the success of it does not reply only on the insights gained; it depends on how much the machine could think more ‘human-like’. One of the biggest downsides of a machine-driven algorithm is that it does not take into account things that could matter a lot, or things that we, as human, treasure. In the case of predicting recidivism rate, it would be very difficult to assess someone’s remorse over the crimes they committed, or their will to change and repent, or the words and reasonings they used in their defense, along with many factors that could be considered directly connected to someone’s recidivism rate. We think this one of the reasons why our algorithms could not break the 70% line in accuracy 
+
 
