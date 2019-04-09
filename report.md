@@ -664,7 +664,7 @@ Since one of our goals is to see if the algorithm is biased against African Amer
 
 ### Data analysis{.tabset}  
 #### 1  
-The graph shows the density ofthe predicted score from the algorithm. We can see a that in all three age groups, african-americans has a higher density beyond the 5.0 in score; with non-african-american criminals having distrabutions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two.
+The graph shows the density of the predicted score from the algorithm. We can see that in all three age groups, african-americans have a higher density beyond the 5.0 score; with non-african-american criminals having distributions closing to the other end. It also shows the differences among the age group, while the algorithm is fairly willing to give a low score to someone in the 'Greater than 45' group; it tends to give a higher score to people that are in the less than 25 more than the other two.
 
 ```r
 dat_o %>% 
@@ -800,6 +800,7 @@ Yes|0.64|0.63|0.66
 
 ## Confusion Matrix(Decision Tree)  
 
+
 ```r
 p_class <- factor(rdat$prediction, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -816,8 +817,10 @@ j <- fourfoldplot(re$table , color = c('#7fff3f' , '#3fbfff'))
 ```
 
 ![](report_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
+ 
 
 ## Confusion Matrix(Neutral Network)
+
 
 ```r
 p_class <- factor(frdat$NN, levels = c(1,0))
@@ -834,8 +837,8 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
 ![](report_files/figure-html/unnamed-chunk-11-2.png)<!-- -->
-
 ## Confusion Matrix(KNN)  
+
 
 ```r
 p_class <- factor(frdat$KNN, levels = c(1,0))
@@ -856,6 +859,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 
 ## Confusion Matrix(Naïve Baynes)
 
+
 ```r
 p_class <- factor(frdat$NG, levels = c(1,0))
 class_levels <- factor(dat$two_year_recid, levels = c(1,0))
@@ -874,6 +878,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ![](report_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
 
 ## Confusion Matrix(Stacking)
+
 
 ```r
 p_class <- factor(frdat$Final, levels = c(1,0))
