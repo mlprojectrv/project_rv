@@ -147,7 +147,7 @@ dat_o %>%
 ```
 
 #### 3
-The logicitic regression graphs show the probability of criminals recidivating. The frist graph includes all type of races, and the second one shows only African American probaility. We can see that there is no significant change in the regression line between each graph. It leads us to think that the race may not be matter a lot statistically.
+The logicitic regression graphs show the probability of criminals recidivating. The frist graph includes all type of races, and the second one shows only African American probaility. We can see that there is no significant change in the regression line between each graph. It leads us to think that the race may not matter a lot statistically.
 ```{r}
 dat_o %>% 
   ggplot() +

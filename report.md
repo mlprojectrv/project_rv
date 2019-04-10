@@ -899,6 +899,7 @@ dat_o %>%
 ![](report_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 #### 3
+The logicitic regression graphs show the probability of criminals recidivating. The frist graph includes all type of races, and the second one shows only African American probaility. We can see that there is no significant change in the regression line between each graph. It leads us to think that the race may not matter a lot statistically.
 
 ```r
 dat_o %>% 
@@ -907,7 +908,7 @@ dat_o %>%
   geom_smooth(method = 'glm', method.args = list(family = 'binomial'), se = F, linetype = 'dashed') +
   geom_point() +
   ggthemes::theme_pander() +
-  labs(title='The Probability of a Criminal Recidivating', subtitle = 'According to their algorithm\'s ', y = 'probability', x = 'Predicted Score')
+  labs(title='The Probability of Criminal Recidivating', subtitle = 'According to their algorithm\'s ', y = 'probability', x = 'Predicted Score')
 ```
 
 ![](report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
@@ -1096,7 +1097,7 @@ Stacking(w/o race)|0.61|0.58|0.74
     
 # Conclusions (including business takeaways and action items)
 1.    The Decision Tree
-We decided not to use the Decision Tree in the Stacking algorithm
+We decided not to use the Decision Tree in the Stacking algorithm, because it was unforgiving. Unlike other three algorithms, the Decision Tree tried to predict that every target criminal was recidivist. Due to this predicition, the accuracy score was very low compared to other three algorithms. 
 2.    Bias  
 When we compare the confusion matrix  of the our result there is some clues that might suggest African-americans are getting the short end of the stick. A lower specificity indicate that the algorithm is not as forgiving and as good at excluding true negatives from the data. However, it also shows a seneitivity of .77, a better score that the overall one. With a lower F1 measure, our do see a drop of performance in prediction for african-american. 
 3.    Score and accuracy   
