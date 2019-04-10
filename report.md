@@ -1097,7 +1097,7 @@ Stacking(w/o race)|0.61|0.58|0.74
     
 # Conclusions (including business takeaways and action items)
 1.    The Decision Tree  
-We decided not to use the Decision Tree in the Stacking algorithm, because it was unforgiving. Unlike other three algorithms, the Decision Tree tried to predict that every target criminal was recidivist. Due to this predicition, the accuracy score was very low compared to other three algorithms. 
+We decided not to use the Decision Tree in the Stacking algorithm, because it was fairly unforgiving. Unlike other three algorithms (over 80% of our data were predicted as recidivist), the Decision Tree tried to predict that every target criminal was recidivist. Due to this predicition, the accuracy score was very low compared to other three algorithms. 
 2.    Bias  
 When we compare the confusion matrix  of the our result there is some clues that might suggest African-americans are getting the short end of the stick. A lower specificity indicate that the algorithm is not as forgiving and as good at excluding true negatives from the data. However, it also shows a seneitivity of .77, a better score that the overall one. With a lower F1 measure, our do see a drop of performance in prediction for african-american. 
 3.    Score and accuracy   
@@ -1105,16 +1105,11 @@ The reason why we compare the two different accuracy scores from each algorithm 
 4.    Limitations  
 We suspect that our data might suffer from an unjust bias because of the self-reinforcing nature of the algorithm. Since the given predicted score is used as an assessment for the judge to decide the sentence of a criminal, which involves how long he/she will be staying in jail. It might, in fact, reinforcing the result of our target (recidivism rate) thinking that the longer a person stays in the justice system(prison), the more likely he/she will end up in a cell again.   
 5.    The true question  
-
 Although we did spend a lot of time on trying different parameters among different algorithms, we were not able to create one that haves a higher accuracy then 70%. When we were pondering on whether we need more features and observations in our dataset, we also agreed that the true question here may not be answered simply by a machine. There are lots of factors that should be considered. The real goal is not to get a 100% accuracy, our goal is to decrease bias in our errors.
-   
+  
 # Lessons Learned  
 1.    Algorithms are tools  
 We realised recidivism is a very tricky study and the more we dig into the topic, the more we see how sometimes human bias could easily be introduced to the data gathering process. A learning algorithm is asked to show the patterns in the data through punishments and reinforcements (error and weights), and when used improperly, could create major misunderstanding and fall into the trap of prejudice and over-generalizations.  
 
 2.    The success of a machine learning algorithm does not rely on how much hidden patterns are found by it only.
 When we talk about how problems could be solved by machine learning, one often mentioned reason is how machine learning studies patterns that are hidden or hard to observed by human. Machine learning algorithms record and remember those subtle changes and trends, then utilizes the data to predict or make judgments base on the given information. One way we assess the performance of an algorithm is to see if it is gaining more insight, discovering hidden patterns. However, the success of it does not reply only on the insights gained; it depends on how much the machine could think more ‘human-like’. One of the biggest downsides of a machine-driven algorithm is that it does not take into account things that could matter a lot, or things that we, as human, treasure. In the case of predicting recidivism rate, it would be very difficult to assess someone’s remorse over the crimes they committed, or their will to change and repent, or the words and reasonings they used in their defense, along with many factors that could be considered directly connected to someone’s recidivism rate. We think this one of the reasons why our algorithms could not break the 70% line in accuracy 
-
-
-
-
