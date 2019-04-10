@@ -67,140 +67,323 @@ There are a few observations from the data.
 
 ### Observation{.tabset}  
 #### The converting
-To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Bayes (classifier), Decision tree (classifier), Neural Network (classifier), and K Nearest Neighbor (Classifier). The data set contains numeric and categorical columns with the binary target column "recidivist or non-recidivist".
+To accomplish our tasks, we needed the data to fit in five different machine learning algorithms, namely, Naïve Bayes (classifier), Decision tree (classifier), Neural Network (classifier), K Nearest Neighbor (Classifier), and stacking. The data set contains numeric and categorical columns with the binary target column "recidivist or non-recidivist".
 
 #### Original data(sample of 5)
 
 ```r
-dat_o %>% head(5) %>% print.data.frame()
+pander(dat_o %>% head(5))
 ```
 
-```
-##   id               name  first        last compas_screening_date  sex
-## 1  1   miguel hernandez miguel   hernandez            2013-08-14 Male
-## 2  3        kevon dixon  kevon       dixon            2013-01-27 Male
-## 3  4           ed philo     ed       philo            2013-04-14 Male
-## 4  5        marcu brown  marcu       brown            2013-01-13 Male
-## 5  6 bouthy pierrelouis bouthy pierrelouis            2013-03-26 Male
-##          dob age         age_cat             race juv_fel_count
-## 1 1947-04-18  69 Greater than 45            Other             0
-## 2 1982-01-22  34         25 - 45 African-American             0
-## 3 1991-05-14  24    Less than 25 African-American             0
-## 4 1993-01-21  23    Less than 25 African-American             0
-## 5 1973-01-22  43         25 - 45            Other             0
-##   decile_score juv_misd_count juv_other_count priors_count
-## 1            1              0               0            0
-## 2            3              0               0            0
-## 3            4              0               1            4
-## 4            8              1               0            1
-## 5            1              0               0            2
-##   days_b_screening_arrest           c_jail_in          c_jail_out
-## 1                      -1 2013-08-13 06:03:42 2013-08-14 05:41:20
-## 2                      -1 2013-01-26 03:45:27 2013-02-05 05:36:53
-## 3                      -1 2013-04-13 04:58:34 2013-04-14 07:02:04
-## 4                      NA                                        
-## 5                      NA                                        
-##   c_case_number c_offense_date c_arrest_date c_days_from_compas
-## 1 13011352CF10A     2013-08-13                                1
-## 2 13001275CF10A     2013-01-26                                1
-## 3 13005330CF10A     2013-04-13                                1
-## 4 13000570CF10A     2013-01-12                                1
-## 5 12014130CF10A                   2013-01-09                 76
-##   c_charge_degree                  c_charge_desc is_recid r_case_number
-## 1               F   Aggravated Assault w/Firearm        0              
-## 2               F Felony Battery w/Prior Convict        1 13009779CF10A
-## 3               F          Possession of Cocaine        1 13011511MM10A
-## 4               F         Possession of Cannabis        0              
-## 5               F          arrest case no charge        0              
-##   r_charge_degree r_days_from_arrest r_offense_date
-## 1                                 NA               
-## 2            (F3)                 NA     2013-07-05
-## 3            (M1)                  0     2013-06-16
-## 4                                 NA               
-## 5                                 NA               
-##                 r_charge_desc  r_jail_in r_jail_out violent_recid
-## 1                                                              NA
-## 2 Felony Battery (Dom Strang)                                  NA
-## 3 Driving Under The Influence 2013-06-16 2013-06-16            NA
-## 4                                                              NA
-## 5                                                              NA
-##   is_violent_recid vr_case_number vr_charge_degree vr_offense_date
-## 1                0                                                
-## 2                1  13009779CF10A             (F3)      2013-07-05
-## 3                0                                                
-## 4                0                                                
-## 5                0                                                
-##                vr_charge_desc type_of_assessment decile_score.1 score_text
-## 1                             Risk of Recidivism              1        Low
-## 2 Felony Battery (Dom Strang) Risk of Recidivism              3        Low
-## 3                             Risk of Recidivism              4        Low
-## 4                             Risk of Recidivism              8       High
-## 5                             Risk of Recidivism              1        Low
-##   screening_date v_type_of_assessment v_decile_score v_score_text
-## 1     2013-08-14     Risk of Violence              1          Low
-## 2     2013-01-27     Risk of Violence              1          Low
-## 3     2013-04-14     Risk of Violence              3          Low
-## 4     2013-01-13     Risk of Violence              6       Medium
-## 5     2013-03-26     Risk of Violence              1          Low
-##   v_screening_date in_custody out_custody priors_count.1 start  end event
-## 1       2013-08-14 2014-07-07  2014-07-14              0     0  327     0
-## 2       2013-01-27 2013-01-26  2013-02-05              0     9  159     1
-## 3       2013-04-14 2013-06-16  2013-06-16              4     0   63     0
-## 4       2013-01-13                                     1     0 1174     0
-## 5       2013-03-26                                     2     0 1102     0
-##   two_year_recid
-## 1              0
-## 2              1
-## 3              1
-## 4              0
-## 5              0
-```
+
+-------------------------------------------------------------------------------
+ id          name          first       last       compas_screening_date   sex  
+---- -------------------- -------- ------------- ----------------------- ------
+ 1     miguel hernandez    miguel    hernandez         2013-08-14         Male 
+
+ 3       kevon dixon       kevon       dixon           2013-01-27         Male 
+
+ 4         ed philo          ed        philo           2013-04-14         Male 
+
+ 5       marcu brown       marcu       brown           2013-01-13         Male 
+
+ 6    bouthy pierrelouis   bouthy   pierrelouis        2013-03-26         Male 
+-------------------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+-----------------------------------------------------------------------
+    dob       age       age_cat             race         juv_fel_count 
+------------ ----- ----------------- ------------------ ---------------
+ 1947-04-18   69    Greater than 45        Other               0       
+
+ 1982-01-22   34        25 - 45       African-American         0       
+
+ 1991-05-14   24     Less than 25     African-American         0       
+
+ 1993-01-21   23     Less than 25     African-American         0       
+
+ 1973-01-22   43        25 - 45            Other               0       
+-----------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+----------------------------------------------------------------
+ decile_score   juv_misd_count   juv_other_count   priors_count 
+-------------- ---------------- ----------------- --------------
+      1               0                 0               0       
+
+      3               0                 0               0       
+
+      4               0                 1               4       
+
+      8               1                 0               1       
+
+      1               0                 0               2       
+----------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+---------------------------------------------------------------------
+ days_b_screening_arrest        c_jail_in            c_jail_out      
+------------------------- --------------------- ---------------------
+           -1              2013-08-13 06:03:42   2013-08-14 05:41:20 
+
+           -1              2013-01-26 03:45:27   2013-02-05 05:36:53 
+
+           -1              2013-04-13 04:58:34   2013-04-14 07:02:04 
+
+           NA                                                        
+
+           NA                                                        
+---------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+---------------------------------------------------------------------
+ c_case_number   c_offense_date   c_arrest_date   c_days_from_compas 
+--------------- ---------------- --------------- --------------------
+ 13011352CF10A     2013-08-13                             1          
+
+ 13001275CF10A     2013-01-26                             1          
+
+ 13005330CF10A     2013-04-13                             1          
+
+ 13000570CF10A     2013-01-12                             1          
+
+ 12014130CF10A                     2013-01-09             76         
+---------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+-----------------------------------------------------------------------------
+ c_charge_degree           c_charge_desc            is_recid   r_case_number 
+----------------- -------------------------------- ---------- ---------------
+        F           Aggravated Assault w/Firearm       0                     
+
+        F          Felony Battery w/Prior Convict      1       13009779CF10A 
+
+        F              Possession of Cocaine           1       13011511MM10A 
+
+        F              Possession of Cannabis          0                     
+
+        F              arrest case no charge           0                     
+-----------------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+-------------------------------------------------------
+ r_charge_degree   r_days_from_arrest   r_offense_date 
+----------------- -------------------- ----------------
+                           NA                          
+
+      (F3)                 NA             2013-07-05   
+
+      (M1)                 0              2013-06-16   
+
+                           NA                          
+
+                           NA                          
+-------------------------------------------------------
+
+Table: Table continues below
+
+ 
+-----------------------------------------------------------------------
+        r_charge_desc          r_jail_in    r_jail_out   violent_recid 
+----------------------------- ------------ ------------ ---------------
+                                                              NA       
+
+ Felony Battery (Dom Strang)                                  NA       
+
+ Driving Under The Influence   2013-06-16   2013-06-16        NA       
+
+                                                              NA       
+
+                                                              NA       
+-----------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+------------------------------------------------------------------------
+ is_violent_recid   vr_case_number   vr_charge_degree   vr_offense_date 
+------------------ ---------------- ------------------ -----------------
+        0                                                               
+
+        1           13009779CF10A          (F3)           2013-07-05    
+
+        0                                                               
+
+        0                                                               
+
+        0                                                               
+------------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+--------------------------------------------------------------------------------
+       vr_charge_desc          type_of_assessment   decile_score.1   score_text 
+----------------------------- -------------------- ---------------- ------------
+                               Risk of Recidivism         1             Low     
+
+ Felony Battery (Dom Strang)   Risk of Recidivism         3             Low     
+
+                               Risk of Recidivism         4             Low     
+
+                               Risk of Recidivism         8             High    
+
+                               Risk of Recidivism         1             Low     
+--------------------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+-----------------------------------------------------------------------
+ screening_date   v_type_of_assessment   v_decile_score   v_score_text 
+---------------- ---------------------- ---------------- --------------
+   2013-08-14       Risk of Violence           1              Low      
+
+   2013-01-27       Risk of Violence           1              Low      
+
+   2013-04-14       Risk of Violence           3              Low      
+
+   2013-01-13       Risk of Violence           6             Medium    
+
+   2013-03-26       Risk of Violence           1              Low      
+-----------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+-----------------------------------------------------------------------------
+ v_screening_date   in_custody   out_custody   priors_count.1   start   end  
+------------------ ------------ ------------- ---------------- ------- ------
+    2013-08-14      2014-07-07   2014-07-14          0            0     327  
+
+    2013-01-27      2013-01-26   2013-02-05          0            9     159  
+
+    2013-04-14      2013-06-16   2013-06-16          4            0      63  
+
+    2013-01-13                                       1            0     1174 
+
+    2013-03-26                                       2            0     1102 
+-----------------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+------------------------
+ event   two_year_recid 
+------- ----------------
+   0           0        
+
+   1           1        
+
+   0           1        
+
+   0           0        
+
+   0           0        
+------------------------
 #### Data after wrangling(Categorical)
 
 ```r
-dat %>% head(5) %>% print.data.frame()
+pander(dat %>% head(5))
 ```
 
-```
-##    sex         age_cat  race juv_fel_count juv_misd_count juv_other_count
-## 1 Male Greater than 45 FALSE          None           None            None
-## 2 Male         25 - 45  TRUE          None           None            None
-## 3 Male    Less than 25  TRUE          None           None          1 to 2
-## 4 Male    Less than 25  TRUE          None         1 to 2            None
-## 5 Male         25 - 45 FALSE          None           None            None
-##   priors_count c_charge_degree                  c_charge_desc
-## 1         None               F   Aggravated Assault w/Firearm
-## 2         None               F Felony Battery w/Prior Convict
-## 3       1 to 5               F          Possession of Cocaine
-## 4       1 to 5               F         Possession of Cannabis
-## 5       1 to 5               F          arrest case no charge
-##   two_year_recid
-## 1              0
-## 2              1
-## 3              1
-## 4              0
-## 5              0
-```
+
+-----------------------------------------------------------------
+ sex        age_cat       race    juv_fel_count   juv_misd_count 
+------ ----------------- ------- --------------- ----------------
+ Male   Greater than 45   FALSE       None             None      
+
+ Male       25 - 45       TRUE        None             None      
+
+ Male    Less than 25     TRUE        None             None      
+
+ Male    Less than 25     TRUE        None            1 to 2     
+
+ Male       25 - 45       FALSE       None             None      
+-----------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+--------------------------------------------------
+ juv_other_count   priors_count   c_charge_degree 
+----------------- -------------- -----------------
+      None             None              F        
+
+      None             None              F        
+
+     1 to 2           1 to 5             F        
+
+      None            1 to 5             F        
+
+      None            1 to 5             F        
+--------------------------------------------------
+
+Table: Table continues below
+
+ 
+-------------------------------------------------
+         c_charge_desc            two_year_recid 
+-------------------------------- ----------------
+  Aggravated Assault w/Firearm          0        
+
+ Felony Battery w/Prior Convict         1        
+
+     Possession of Cocaine              1        
+
+     Possession of Cannabis             0        
+
+     arrest case no charge              0        
+-------------------------------------------------
 #### Data after wrangleing(Numeric)
 
 ```r
-dat_nnn %>% head(5) %>% print.data.frame()
+pander(dat_nnn %>% head(5))
 ```
 
-```
-##   sex age race juv_fel_count juv_misd_count juv_other_count priors_count
-## 1   1  69    1             0              0               0            0
-## 2   1  34    0             0              0               0            0
-## 3   1  24    0             0              0               1            4
-## 4   1  23    0             0              1               0            1
-## 5   1  43    1             0              0               0            2
-##   c_charge_degree c_charge_desc two_year_recid
-## 1               0             1              0
-## 2               0             2              1
-## 3               0             3              1
-## 4               0             4              0
-## 5               0             5              0
-```
+
+---------------------------------------------------------------------
+ sex   age   race   juv_fel_count   juv_misd_count   juv_other_count 
+----- ----- ------ --------------- ---------------- -----------------
+  1    69     1           0               0                 0        
+
+  1    34     0           0               0                 0        
+
+  1    24     0           0               0                 1        
+
+  1    23     0           0               1                 0        
+
+  1    43     1           0               0                 0        
+---------------------------------------------------------------------
+
+Table: Table continues below
+
+ 
+-----------------------------------------------------------------
+ priors_count   c_charge_degree   c_charge_desc   two_year_recid 
+-------------- ----------------- --------------- ----------------
+      0                0                1               0        
+
+      0                0                2               1        
+
+      4                0                3               1        
+
+      1                0                4               0        
+
+      2                0                5               0        
+-----------------------------------------------------------------
 
 ###    Decisions made{.tabset}  
 #### Charges
@@ -654,8 +837,6 @@ dat_o$c_charge_desc %>%
 ## [438] Possession of XLR11                                 
 ## 438 Levels:  Abuse Without Great Harm ... Voyeurism
 ```
-#### Race   
-Since one of our goals is to see if the algorithm is biased against African Americans criminals, we simply convert all the non-black race to 0 and black to 1 (basically a column to 'Isblack'). 
 
 
 
@@ -838,6 +1019,7 @@ fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
 
 ![](report_files/figure-html/unnamed-chunk-11-2.png)<!-- -->
+
 ## Confusion Matrix(KNN)  
 
 
@@ -922,7 +1104,7 @@ The reason why we compare the two different accuracy scores from each algorithm 
 4.    Limitations  
 We suspect that our data might suffer from an unjust bias because of the self-reinforcing nature of the algorithm. Since the given predicted score is used as an assessment for the judge to decide the sentence of a criminal, which involves how long he/she will be staying in jail. It might, in fact, reinforcing the result of our target (recidivism rate) thinking that the longer a person stays in the justice system(prison), the more likely he/she will end up in a cell again.   
 5.    The true question
-Although we did spend a lot of time on 
+Although we did spend a lot of time on trying 
    
 # Lessons Learned  
 1.    Algorithms are tools  

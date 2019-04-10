@@ -66,19 +66,19 @@ There are a few observations from the data.
 
 ### Observation{.tabset}  
 #### The converting
-To accomplish our tasks, we needed the data to fit in four different machine learning algorithms, namely, Naïve Bayes (classifier), Decision tree (classifier), Neural Network (classifier), and K Nearest Neighbor (Classifier). The data set contains numeric and categorical columns with the binary target column "recidivist or non-recidivist".
+To accomplish our tasks, we needed the data to fit in five different machine learning algorithms, namely, Naïve Bayes (classifier), Decision tree (classifier), Neural Network (classifier), K Nearest Neighbor (Classifier), and stacking. The data set contains numeric and categorical columns with the binary target column "recidivist or non-recidivist".
 
 #### Original data(sample of 5)
 ```{r}
-dat_o %>% head(5) %>% print.data.frame()
+pander(dat_o %>% head(5))
 ```
 #### Data after wrangling(Categorical)
 ```{r}
-dat %>% head(5) %>% print.data.frame()
+pander(dat %>% head(5))
 ```
 #### Data after wrangleing(Numeric)
 ```{r}
-dat_nnn %>% head(5) %>% print.data.frame()
+pander(dat_nnn %>% head(5))
 ```
 
 ###    Decisions made{.tabset}  
@@ -90,8 +90,6 @@ One of the challenges of the data is the c_charge_desc that stores the descripti
 dat_o$c_charge_desc %>% 
   unique() 
 ```
-#### Race   
-Since one of our goals is to see if the algorithm is biased against African Americans criminals, we simply convert all the non-black race to 0 and black to 1 (basically a column to 'Isblack'). 
 
 
 
@@ -239,6 +237,7 @@ p_class <- factor(fdat$NN, levels = c(1,0))
 re <- confusionMatrix(p_class, class_levels)
 fourfoldplot(re$table, color = c('#7fff3f' , '#3fbfff'))
 ```
+
 ## Confusion Matrix(KNN)  
 
 ```{r}
@@ -299,7 +298,7 @@ The reason why we compare the two different accuracy scores from each algorithm 
 4.    Limitations  
 We suspect that our data might suffer from an unjust bias because of the self-reinforcing nature of the algorithm. Since the given predicted score is used as an assessment for the judge to decide the sentence of a criminal, which involves how long he/she will be staying in jail. It might, in fact, reinforcing the result of our target (recidivism rate) thinking that the longer a person stays in the justice system(prison), the more likely he/she will end up in a cell again.   
 5.    The true question
-Although we did spend a lot of time on 
+Although we did spend a lot of time on trying 
    
 # Lessons Learned  
 1.    Algorithms are tools  
