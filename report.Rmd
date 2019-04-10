@@ -60,9 +60,30 @@ There are two main goals for our project:
 ###    Understanding the data  
 Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consists of 53 columns and 10 observations.  
   
-  
 There are a few observations from the data.  
-  
+
+####  Column Descriptions
+sex: The gender of each criminal; numerically set as 1 (Male) and 0 (Female).
+
+age: The age of each criminal when they when they were screened.
+
+age_cat: Criminals are seperated into three age brackets; less than 25, 25 - 45, greater than 45.
+
+race: The race of the criminal; numerically 0 (Caucasian), 1 (African-American), 2 (Hispanic), 3 (Native American), 4 (Asian), 5(Other).
+
+juv_fel_count: The number of juvenile felonies each criminal has.
+
+juv_misd_count: The number of Juvenile misdemeanors each criminal has.
+
+juv_other_count: The number of other juvenile offenses the criminal has.
+
+priors_count: The number of prior crimes committed before aprehended.
+
+c_charge_degree: Were they charged for a felony or misdemeanor when they were arrested?
+
+c_charge_desc: The description of each charge is listed below.
+
+two_year_recid (Target Feature): Were they arrested for committing a crime within two years after they were released from prison? 1 (yes) and 0 (no).
 
 ### Observation{.tabset}  
 #### The converting

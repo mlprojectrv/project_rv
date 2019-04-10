@@ -61,9 +61,30 @@ There are two main goals for our project:
 ###    Understanding the data  
 Fortunately, the study provided the data we need, and we were able to get our hands on a fairly clean dataset. The data consists of 53 columns and 10 observations.  
   
-  
 There are a few observations from the data.  
-  
+
+####  Column Descriptions
+sex: The gender of each criminal; numerically set as 1 (Male) and 0 (Female).
+
+age: The age of each criminal when they when they were screened.
+
+age_cat: Criminals are seperated into three age brackets; less than 25, 25 - 45, greater than 45.
+
+race: The race of the criminal; numerically 0 (Caucasian), 1 (African-American), 2 (Hispanic), 3 (Native American), 4 (Asian), 5(Other).
+
+juv_fel_count: The number of juvenile felonies each criminal has.
+
+juv_misd_count: The number of Juvenile misdemeanors each criminal has.
+
+juv_other_count: The number of other juvenile offenses the criminal has.
+
+priors_count: The number of prior crimes committed before aprehended.
+
+c_charge_degree: Were they charged for a felony or misdemeanor when they were arrested?
+
+c_charge_desc: The description of each charge is listed below.
+
+two_year_recid (Target Feature): Were they arrested for committing a crime within two years after they were released from prison? 1 (yes) and 0 (no).
 
 ### Observation{.tabset}  
 #### The converting
@@ -1097,7 +1118,7 @@ Stacking(w/o race)|0.61|0.58|0.74
     
 # Conclusions (including business takeaways and action items)
 1.    The Decision Tree  
-We decided not to use the Decision Tree in the Stacking algorithm, because it was unforgiving. Unlike other three algorithms, the Decision Tree tried to predict that every target criminal was recidivist. Due to this predicition, the accuracy score was very low compared to other three algorithms. 
+We decided not to use the Decision Tree in the Stacking algorithm, because it was fairly unforgiving. Unlike other three algorithms (over 80% of our data were predicted as recidivist), the Decision Tree tried to predict that every target criminal was recidivist. Due to this predicition, the accuracy score was very low compared to other three algorithms. 
 2.    Bias  
 When we compare the confusion matrix  of the our result there is some clues that might suggest African-americans are getting the short end of the stick. A lower specificity indicate that the algorithm is not as forgiving and as good at excluding true negatives from the data. However, it also shows a seneitivity of .77, a better score that the overall one. With a lower F1 measure, our do see a drop of performance in prediction for african-american. 
 3.    Score and accuracy   
@@ -1105,7 +1126,6 @@ The reason why we compare the two different accuracy scores from each algorithm 
 4.    Limitations  
 We suspect that our data might suffer from an unjust bias because of the self-reinforcing nature of the algorithm. Since the given predicted score is used as an assessment for the judge to decide the sentence of a criminal, which involves how long he/she will be staying in jail. It might, in fact, reinforcing the result of our target (recidivism rate) thinking that the longer a person stays in the justice system(prison), the more likely he/she will end up in a cell again.   
 5.    The true question  
-
 Although we did spend a lot of time on trying different parameters among different algorithms, we were not able to create one that haves a higher accuracy then 70%. When we were pondering on whether we need more features and observations in our dataset, we also agreed that the true question here may not be answered simply by a machine. There are lots of factors that should be considered. The real goal is not to get a 100% accuracy, our goal is to decrease bias in our errors.
    
 # Lessons Learned  
